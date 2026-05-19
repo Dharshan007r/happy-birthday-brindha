@@ -30,8 +30,6 @@ body {
 .stage { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; }
 .hidden { display: none !important; }
 
-/* --- Celebration Assets & Animations --- */
-
 /* Drifting Floating Hearts */
 .heart { position: fixed; color: #ffffff; font-size: 20px; animation: float 4s linear infinite; opacity: 0; pointer-events: none; z-index: 1; filter: drop-shadow(0 0 5px rgba(244,114,182,0.5)); }
 @keyframes float { 0% { transform: translateY(105vh) scale(0.6); opacity: 0; } 10% { opacity: 0.5; } 90% { opacity: 0.5; } 100% { transform: translateY(-10vh) scale(1.3); opacity: 0; } }
@@ -39,7 +37,7 @@ body {
 /* Pop-able Balloons */
 .balloon-pop { 
   position: fixed; font-size: 3rem; cursor: pointer; animation: floatBalloon 7s linear forwards; 
-  user-select: none; z-index: 15; /* Floats in FRONT of gallery */
+  user-select: none; z-index: 15; 
 }
 @keyframes floatBalloon { 
   0% { transform: translateY(110vh) rotate(0deg); opacity: 1; } 
@@ -51,7 +49,6 @@ body {
 .burst { position: fixed; width: 10px; height: 10px; border-radius: 50%; animation: burstParticles 0.6s ease-out forwards; pointer-events: none; z-index: 16; }
 @keyframes burstParticles { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(5) translate(var(--bx), var(--by)); opacity: 0; } }
 
-/* Basic Shake and Zoom */
 @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
 @keyframes zoomIn { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
@@ -73,8 +70,8 @@ body {
 .nav-btn:active { transform: scale(0.85); }
 .counter-tag { background: rgba(255,255,255,0.25); backdrop-filter: blur(5px); padding: 6px 18px; border-radius: 20px; font-size: 0.85rem; color: white; font-weight: 700; border: 1px solid rgba(255,255,255,0.3); }
 
-/* Glassmorphic Typewriter Letter */
-.letter-paper { background: rgba(255, 255, 255, 0.96); border-radius: 24px; padding: 25px 20px; text-align: left; box-shadow: 0 25px 50px rgba(0,0,0,0.3); max-height: 75vh; overflow-y: auto; width: 100%; z-index: 20; position: relative; display: none; /* Controlled by JS */ }
+/* Glassmorphic Letter */
+.letter-paper { background: rgba(255, 255, 255, 0.96); border-radius: 24px; padding: 25px 20px; text-align: left; box-shadow: 0 25px 50px rgba(0,0,0,0.3); max-height: 75vh; overflow-y: auto; width: 100%; z-index: 20; position: relative; display: none; }
 .letter-header { font-size: 1.4rem; color: #db2777; font-weight: 700; text-align: center; padding-bottom: 12px; border-bottom: 2px solid #fbcfe8; margin-bottom: 18px; }
 .letter-text { font-size: 0.95rem; color: #374151; line-height: 1.65; white-space: pre-wrap; font-family: 'Courier New', Courier, monospace; }
 .signature { text-align: center; margin-top: 25px; font-size: 1rem; color: #db2777; font-weight: 700; border-top: 2px solid #fbcfe8; padding-top: 15px; display: none; }
@@ -122,9 +119,7 @@ I love u dii my goddess once again happy birthday papu may his year brings u all
 and as I always say all ur bad comes to me and all ur goods and my goods comes to u papu once happiest birthday and I love u more then 3000 times mine💐 🤍 🫂 🧿 🥂
 `;
 
-// Global Click Handler for Tap Particles
 function handleGlobalClick(e) {
-  // Only spawn if it's not a button or cake click
   if (e.target.tagName === 'BUTTON' || e.target.classList.contains('cake-avatar')) return;
   spawnExplosion(e.clientX, e.clientY, ['💖', '❤']);
 }
@@ -133,16 +128,12 @@ function spawnExplosion(x, y, particles) {
   for (let i = 0; i < 6; i++) {
     const heart = document.createElement('div');
     heart.innerHTML = particles[Math.random() > 0.5 ? 0 : 1];
-    const tapExplodeClass = particles[0] === '💖' ? 'tap-heart' : 'cracking-burst';
-    
-    // We reuse the explosion CSS concept
     heart.style.position = 'fixed';
     heart.style.color = '#ff69b4';
     heart.style.fontSize = '24px';
     heart.style.pointerEvents = 'none';
     heart.style.zIndex = '9999';
     heart.style.animation = 'explode 0.8s ease-out forwards';
-    
     heart.style.left = x + 'px';
     heart.style.top = y + 'px';
     const mx = (Math.random() - 0.5) * 200 + 'px';
@@ -154,10 +145,8 @@ function spawnExplosion(x, y, particles) {
   }
 }
 
-// Celebration Spawners
 function createHeart() { const heart = document.createElement("div"); heart.innerHTML = Math.random() > 0.5 ? "❤" : "💖"; heart.className = "heart"; heart.style.left = Math.random() * 100 + "vw"; heart.style.bottom = "-5vh"; heart.style.animationDuration = (Math.random() * 2 + 3) + "s"; document.body.appendChild(heart); setTimeout(() => heart.remove(), 4000); }
 
-// Balloon Minigame Spawner
 let balloonInterval;
 const balloonEmojis = ['🎈', '🍬', '✨', '🎁'];
 function spawnInteractiveBalloon() {
@@ -167,28 +156,17 @@ function spawnInteractiveBalloon() {
   balloon.style.left = (Math.random() * 80 + 10) + "vw";
   balloon.style.fontSize = (Math.random() * 2 + 2) + "rem"; 
   balloon.style.animationDuration = (Math.random() * 3 + 6) + "s";
-  
-  balloon.onclick = function(e) {
-    e.stopPropagation(); // Prevents tapping particle
-    popBalloon(balloon, e.clientX, e.clientY);
-  };
-  
+  balloon.onclick = function(e) { e.stopPropagation(); popBalloon(balloon, e.clientX, e.clientY); };
   document.body.appendChild(balloon);
-  // Cleanup if missed
   setTimeout(() => { if(balloon.parentNode) balloon.remove(); }, 8000);
 }
 
 function popBalloon(balloonEl, x, y) {
   balloonEl.remove();
-  // Colorful Confetti Pop
   confetti({ particleCount: 40, spread: 60, origin: { x: x / window.innerWidth, y: y / window.innerHeight }, colors: ['#FFC0CB', '#FF69B4', '#D02090'] });
-  // Minor shake
   document.body.style.animation = "shake 0.15s";
   setTimeout(() => document.body.style.animation = "", 150);
 }
-
-
-// --- Stages ---
 
 window.addEventListener('DOMContentLoaded', () => { let num = 3; const textNode = document.getElementById('countdown-text'); const loop = setInterval(() => { num--; if (num > 0) { textNode.innerText = num; } else { textNode.innerText = "❤"; clearInterval(loop); setTimeout(() => { hideAndShow('stage-countdown', 'stage-loading'); setTimeout(() => { hideAndShow('stage-loading', 'stage-intro'); }, 2200); }, 700); } }, 1000); });
 function hideAndShow(oldId, newId) { document.getElementById(oldId).classList.add('hidden'); document.getElementById(newId).classList.remove('hidden'); }
@@ -197,7 +175,7 @@ function startJourneyAndMusic() {
   const music = document.getElementById('birthday-track'); 
   if (music) { music.play().catch(e => console.log(e)); } 
   hideAndShow('stage-intro', 'stage-cake'); 
-  setInterval(createHeart, 350); // Start ambient hearts
+  setInterval(createHeart, 350);
 }
 
 function cutTheCake() { 
@@ -205,7 +183,6 @@ function cutTheCake() {
   document.getElementById('cake-emoji').innerText = "🍰✨"; 
   document.getElementById('cake-next-btn').classList.remove('hidden'); 
   document.body.style.animation = "shake 0.5s"; 
-  // Initial side bursts
   triggerConfettiSideStreams();
 }
 
@@ -214,4 +191,79 @@ function triggerConfettiSideStreams() {
   (function frame() {
     confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 } });
     confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 } });
-    if (Date.now() < end) {
+    if (Date.now() < end) { requestAnimationFrame(frame); }
+  }());
+}
+
+function goToGalleryStage() { 
+  hideAndShow('stage-cake', 'stage-gallery'); 
+  balloonInterval = setInterval(spawnInteractiveBalloon, 1500);
+}
+
+function triggerGrandFinaleAndLetter() {
+  hideAndShow('stage-gallery', 'stage-message');
+  clearInterval(balloonInterval);
+  document.querySelectorAll('.balloon-pop').forEach(b => b.remove());
+  triggerSequentialFireworks();
+
+  setTimeout(() => {
+    const letter = document.getElementById('letter-paper');
+    letter.style.display = 'block';
+    letter.style.animation = 'zoomIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+    setTimeout(() => { startTypewriterReveal(); }, 800);
+  }, 2500);
+}
+
+function triggerSequentialFireworks() {
+  const fwData = [{ x: 0.1, y: 0.2 }, { x: 0.9, y: 0.2 }, { x: 0.1, y: 0.8 }, { x: 0.9, y: 0.8 }];
+  fwData.forEach((fw, index) => { setTimeout(() => { massiveCrackerBurst(fw.x, fw.y); }, index * 600); });
+}
+
+function massiveCrackerBurst(x, y) {
+  const colors = ['#FFD700', '#FF1493', '#00FFFF', '#FF8C00', '#ADFF2F'];
+  const burstColors = [colors[Math.floor(Math.random() * colors.length)]];
+  confetti({ particleCount: 150, spread: 80, origin: { x: x, y: y }, colors: burstColors, startVelocity: 60, ticks: 300 });
+  confetti({ particleCount: 100, spread: 120, origin: { x: x, y: y }, colors: burstColors, startVelocity: 45, ticks: 250 });
+}
+
+function startTypewriterReveal() {
+  const textContainer = document.getElementById('typewriter-text');
+  textContainer.innerHTML = '';
+  const allLines = rawMessage.split('\n');
+  
+  allLines.forEach(line => {
+    const p = document.createElement('p');
+    p.textContent = line.trim() === '' ? ' ' : line;
+    p.style.opacity = '0';
+    p.style.transform = 'translateY(15px)';
+    p.style.transition = 'opacity 0.8s ease-out, transform 0.8s ease-out';
+    textContainer.appendChild(p);
+  });
+
+  const lines = textContainer.querySelectorAll('p');
+  let currentLine = 0;
+
+  function revealNextLine() {
+    if (currentLine < lines.length) {
+      lines[currentLine].style.opacity = '1';
+      lines[currentLine].style.transform = 'translateY(0)';
+      currentLine++;
+      let nextDelay = 1200;
+      if (currentLine < lines.length) {
+         if (lines[currentLine].textContent.trim() === '') nextDelay = 500;
+         if (lines[currentLine].textContent.includes('Enaku therium')) nextDelay = 1800;
+      }
+      setTimeout(revealNextLine, nextDelay);
+    } else {
+      const sig = document.getElementById('signature-block');
+      sig.style.display = 'block';
+      sig.style.animation = 'zoomIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards';
+    }
+  }
+  revealNextLine();
+}
+
+function changeSlide(dir) { activeIndex = (activeIndex + dir + photoFiles.length) % photoFiles.length; document.getElementById('main-slider-img').src = photoFiles[activeIndex]; document.getElementById('main-slider-caption').innerText = photoCaptions[activeIndex]; document.getElementById('slide-index-counter').innerText = `${activeIndex + 1} / 11`; }
+</script>
+</body>
+</html>
