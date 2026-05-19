@@ -89,23 +89,29 @@
       cursor: pointer;
     }
 
+    /* FIXED FOR MOBILE & FULL PICTURE SIZING */
     .polaroid-frame {
       background: white;
       padding: 10px;
-      padding-bottom: 45px;
+      padding-bottom: 50px; /* Leave breathing space for dynamic text captions */
       border-radius: 8px;
       box-shadow: 0 12px 24px rgba(0,0,0,0.12);
       width: 100%;
       max-width: 280px;
-      height: 330px;
       position: relative;
       margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
     .polaroid-frame img {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
+      height: auto; 
+      max-height: 280px; /* Prevents super tall pictures from running off the screen */
+      object-fit: contain; /* Prevents cropping - forces full visibility */
       border-radius: 4px;
+      display: block;
     }
     .polaroid-caption {
       position: absolute;
@@ -324,13 +330,11 @@
       document.getElementById(newId).classList.remove('hidden');
     }
 
-    // Safely plays music when she taps the physical screen button
-    // This stops mobile browsers from breaking or muting the sound
     function startJourneyAndMusic() {
       const music = document.getElementById('birthday-track');
       if (music) {
         music.play().catch(function(error) {
-          console.log("Mobile browser gesture block bypassed:", error);
+          console.log("Mobile gesture block caught:", error);
         });
       }
       hideAndShow('stage-intro', 'stage-cake');
