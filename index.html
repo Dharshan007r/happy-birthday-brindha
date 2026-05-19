@@ -8,7 +8,7 @@
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
-/* Dynamic Background */
+/* Dynamic Moving Background */
 body { 
   background: linear-gradient(-45deg, #fbcfe8, #f472b6, #db2777, #9333ea);
   background-size: 400% 400%;
@@ -30,6 +30,21 @@ body {
 .stage { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; }
 .hidden { display: none !important; }
 
+/* Tap Heart Particles */
+.tap-heart {
+  position: fixed;
+  color: #ff69b4;
+  font-size: 24px;
+  pointer-events: none;
+  z-index: 9999;
+  animation: explode 0.8s ease-out forwards;
+}
+
+@keyframes explode {
+  0% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; }
+  100% { transform: translate(var(--mx), var(--my)) scale(0) rotate(360deg); opacity: 0; }
+}
+
 /* Drifting Floating Hearts */
 .heart { position: fixed; color: #ffffff; font-size: 20px; animation: float 4s linear infinite; opacity: 0; pointer-events: none; z-index: 1; filter: drop-shadow(0 0 5px rgba(244,114,182,0.5)); }
 @keyframes float { 0% { transform: translateY(105vh) scale(0.6); opacity: 0; } 10% { opacity: 0.5; } 90% { opacity: 0.5; } 100% { transform: translateY(-10vh) scale(1.3); opacity: 0; } }
@@ -45,14 +60,10 @@ body {
   100% { transform: translateY(-20vh) rotate(30deg); opacity: 0; } 
 }
 
-/* Balloon Burst Effect */
-.burst { position: fixed; width: 10px; height: 10px; border-radius: 50%; animation: burstParticles 0.6s ease-out forwards; pointer-events: none; z-index: 16; }
-@keyframes burstParticles { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(5) translate(var(--bx), var(--by)); opacity: 0; } }
-
 @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
 @keyframes zoomIn { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-/* Standard UI */
+/* Standard UI Elements */
 .countdown-text { font-size: 7rem; font-weight: 300; color: white; text-shadow: 0 0 20px rgba(219,39,119,0.6); }
 .kitty-img { width: 95px; height: 95px; margin-bottom: 20px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1)); }
 .pink-title { color: white; font-size: 1.6rem; font-weight: 700; line-height: 1.4; margin-bottom: 25px; padding: 0 5px; text-shadow: 0 2px 4px rgba(0,0,0,0.15); }
@@ -61,7 +72,7 @@ body {
 .cake-avatar { font-size: 7.5rem; margin: 20px 0; cursor: pointer; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.15)); z-index: 20; transition: 0.2s;}
 .cake-avatar:active { transform: scale(0.9); }
 
-/* Premium Gallery */
+/* Premium Gallery Styling */
 .polaroid-frame { background: white; padding: 12px; padding-bottom: 55px; border-radius: 12px; box-shadow: 0 20px 40px rgba(0,0,0,0.25); width: 100%; max-width: 290px; position: relative; margin-bottom: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; height: auto; animation: zoomIn 0.5s ease-out; z-index: 10; }
 .polaroid-frame img { width: 100%; height: auto; object-fit: contain; border-radius: 6px; display: block; max-height: 380px; }
 .polaroid-caption { position: absolute; bottom: 14px; left: 0; right: 0; font-size: 1.1rem; color: #db2777; font-weight: 700; font-style: italic; }
@@ -70,7 +81,7 @@ body {
 .nav-btn:active { transform: scale(0.85); }
 .counter-tag { background: rgba(255,255,255,0.25); backdrop-filter: blur(5px); padding: 6px 18px; border-radius: 20px; font-size: 0.85rem; color: white; font-weight: 700; border: 1px solid rgba(255,255,255,0.3); }
 
-/* Glassmorphic Letter */
+/* Elegant Letter Box */
 .letter-paper { background: rgba(255, 255, 255, 0.96); border-radius: 24px; padding: 25px 20px; text-align: left; box-shadow: 0 25px 50px rgba(0,0,0,0.3); max-height: 75vh; overflow-y: auto; width: 100%; z-index: 20; position: relative; display: none; }
 .letter-header { font-size: 1.4rem; color: #db2777; font-weight: 700; text-align: center; padding-bottom: 12px; border-bottom: 2px solid #fbcfe8; margin-bottom: 18px; }
 .letter-text { font-size: 0.95rem; color: #374151; line-height: 1.65; white-space: pre-wrap; font-family: 'Courier New', Courier, monospace; }
@@ -121,13 +132,13 @@ and as I always say all ur bad comes to me and all ur goods and my goods comes t
 
 function handleGlobalClick(e) {
   if (e.target.tagName === 'BUTTON' || e.target.classList.contains('cake-avatar')) return;
-  spawnExplosion(e.clientX, e.clientY, ['💖', '❤']);
+  spawnExplosion(e.clientX, e.clientY);
 }
 
-function spawnExplosion(x, y, particles) {
+function spawnExplosion(x, y) {
   for (let i = 0; i < 6; i++) {
     const heart = document.createElement('div');
-    heart.innerHTML = particles[Math.random() > 0.5 ? 0 : 1];
+    heart.innerHTML = Math.random() > 0.5 ? '💖' : '❤';
     heart.style.position = 'fixed';
     heart.style.color = '#ff69b4';
     heart.style.fontSize = '24px';
@@ -247,23 +258,3 @@ function startTypewriterReveal() {
     if (currentLine < lines.length) {
       lines[currentLine].style.opacity = '1';
       lines[currentLine].style.transform = 'translateY(0)';
-      currentLine++;
-      let nextDelay = 1200;
-      if (currentLine < lines.length) {
-         if (lines[currentLine].textContent.trim() === '') nextDelay = 500;
-         if (lines[currentLine].textContent.includes('Enaku therium')) nextDelay = 1800;
-      }
-      setTimeout(revealNextLine, nextDelay);
-    } else {
-      const sig = document.getElementById('signature-block');
-      sig.style.display = 'block';
-      sig.style.animation = 'zoomIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards';
-    }
-  }
-  revealNextLine();
-}
-
-function changeSlide(dir) { activeIndex = (activeIndex + dir + photoFiles.length) % photoFiles.length; document.getElementById('main-slider-img').src = photoFiles[activeIndex]; document.getElementById('main-slider-caption').innerText = photoCaptions[activeIndex]; document.getElementById('slide-index-counter').innerText = `${activeIndex + 1} / 11`; }
-</script>
-</body>
-</html>
