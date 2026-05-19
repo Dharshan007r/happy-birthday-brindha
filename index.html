@@ -7,347 +7,181 @@
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
   <style>
-    /* Raw CSS guarantees the background and layouts look identical to the video */
+    /* Reset & Deep Centering Layout Rules */
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
     body {
-      background-color: #fbcfe8; /* Exact soft pink from the video layout */
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      min-h: 100vh;
+      background-color: #fbcfe8; /* Soft flat pink background */
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 20px;
+      padding: 24px 16px;
       overflow-x: hidden;
       user-select: none;
     }
-    .app-container {
+    
+    /* Dynamic Full-Screen Viewport Box */
+    .app-viewport {
       width: 100%;
-      max-width: 400px;
-      min-height: 450px;
+      max-width: 420px;
       display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 80vh;
+    }
+
+    /* Isolated Stage Separation Rule */
+    .slide-stage {
+      display: none;
+      width: 100%;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
-    }
-    .stage {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      animation: fadeIn 0.5s ease-out;
-    }
-    .hidden {
-      display: none !important;
+      animation: smoothFade 0.4s ease-out forwards;
     }
     
-    /* Stage 1: Big Countdown Font Style */
-    .countdown-text {
-      font-size: 8rem;
+    /* Triggers proper vertical screen layout for the active slide phase only */
+    .slide-stage.active {
+      display: flex !important;
+    }
+
+    /* Massive Centered Countdown Font */
+    .countdown-display {
+      font-size: 11rem;
       font-weight: 300;
       color: #db2777;
+      line-height: 1;
     }
 
-    /* Stage 2 & 3: Typography matching the video */
-    .kitty-img {
-      width: 90px;
-      height: 90px;
-      margin-bottom: 20px;
-      animation: bounce 1.2s infinite;
+    /* Hello Kitty Element Styles */
+    .kitty-avatar {
+      width: 110px;
+      height: 110px;
+      margin-bottom: 24px;
+      animation: clearBounce 1.2s infinite;
     }
-    .pink-title {
+    .loading-label {
       color: #db2777;
-      font-size: 1.8rem;
       font-weight: 700;
-      line-height: 1.3;
-      margin-bottom: 25px;
-    }
-    .sub-text {
-      color: #db2777;
-      opacity: 0.7;
-      font-size: 0.85rem;
-      margin-bottom: 15px;
+      font-size: 1.3rem;
+      letter-spacing: -0.01em;
     }
 
-    /* Elegant Clean Buttons */
-    .btn {
+    /* Standardized Bold Screen Titles */
+    .main-title {
+      color: #db2777;
+      font-size: 2rem;
+      font-weight: 800;
+      line-height: 1.4;
+      margin-bottom: 35px;
+      padding: 0 8px;
+      letter-spacing: -0.02em;
+    }
+
+    /* Premium Custom Action Buttons */
+    .action-btn {
       background-color: #f472b6;
       color: white;
       border: none;
-      padding: 12px 30px;
-      border-radius: 25px;
-      font-size: 0.9rem;
-      font-weight: 500;
+      padding: 15px 40px;
+      border-radius: 30px;
+      font-size: 1.05rem;
+      font-weight: 700;
       cursor: pointer;
-      transition: background 0.2s;
-      box-shadow: 0 4px 10px rgba(219, 39, 119, 0.2);
+      transition: background 0.2s, transform 0.1s;
+      box-shadow: 0 5px 15px rgba(219, 39, 119, 0.3);
     }
-    .btn:active {
+    .action-btn:active {
       background-color: #db2777;
+      transform: scale(0.96);
+    }
+    .hidden-element {
+      display: none !important;
     }
 
-    /* Stage 4: Interactive Cake Element */
-    .cake-avatar {
-      font-size: 7rem;
-      margin: 30px 0;
+    /* Large Interactive Cake Component */
+    .interactive-cake {
+      font-size: 8.5rem;
+      margin: 30px 0 40px 0;
       cursor: pointer;
       transition: transform 0.1s;
     }
-    .cake-avatar:active {
-      transform: scale(0.95);
+    .interactive-cake:active {
+      transform: scale(0.92);
     }
 
-    /* Stage 5: Premium Polaroid Card Layout */
-    .polaroid-frame {
+    /* Expanded Polaroid Photo Frame - No Image Cropping Allowed */
+    .single-polaroid {
       background: white;
-      padding: 12px;
-      padding-bottom: 45px;
-      border-radius: 4px;
-      box-shadow: 0 12px 28px rgba(0,0,0,0.15);
+      padding: 14px;
+      padding-bottom: 60px;
+      border-radius: 12px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.14);
       width: 100%;
-      max-width: 300px;
-      height: 360px;
+      max-width: 350px; /* Wider frame box */
       position: relative;
       margin-bottom: 25px;
     }
-    .polaroid-frame img {
+    .single-polaroid img {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
+      height: auto; /* Fits image dynamically without cropping */
+      max-height: 450px;
+      object-fit: contain; /* Forces full image preservation */
+      border-radius: 6px;
+      background-color: #fff;
     }
-    .polaroid-caption {
+    .polaroid-label {
       position: absolute;
-      bottom: 12px;
+      bottom: 18px;
       left: 0;
       right: 0;
-      font-size: 1rem;
+      font-size: 1.2rem;
       color: #db2777;
-      font-weight: 500;
+      font-weight: 700;
+      text-align: center;
     }
-    .slider-controls {
+
+    /* Slider Button Interface Row Layout */
+    .control-row {
       display: flex;
       align-items: center;
-      gap: 20px;
+      gap: 30px;
       margin-bottom: 25px;
     }
-    .nav-btn {
-      background: rgba(255, 255, 255, 0.7);
+    .arrow-btn {
+      background: white;
       border: none;
-      width: 36px;
-      height: 36px;
+      width: 46px;
+      height: 46px;
       border-radius: 50%;
       color: #db2777;
+      font-size: 1.2rem;
       font-weight: bold;
       cursor: pointer;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    .counter-tag {
+    .counter-badge {
       background: white;
-      padding: 4px 14px;
-      border-radius: 15px;
-      font-size: 0.75rem;
-      color: #db2777;
-      font-weight: 600;
-    }
-
-    /* Stage 6: The Love Letter Card View */
-    .letter-paper {
-      background: white;
-      border-radius: 20px;
-      padding: 25px;
-      text-align: left;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-      max-height: 75vh;
-      overflow-y: auto;
-      width: 100%;
-    }
-    .letter-header {
-      font-size: 1.4rem;
-      color: #db2777;
-      font-weight: 700;
-      text-align: center;
-      padding-bottom: 15px;
-      border-b: 1px solid #fbcfe8;
-      margin-bottom: 15px;
-    }
-    .letter-text {
+      padding: 8px 20px;
+      border-radius: 25px;
       font-size: 0.9rem;
-      color: #4b5563;
-      line-height: 1.6;
-    }
-    .letter-text p {
-      margin-bottom: 14px;
-    }
-    .tamil-quote {
-      background: #fdf2f8;
-      border-left: 3px solid #f472b6;
-      padding: 10px;
-      color: #831843;
-      font-style: italic;
-      border-radius: 0 8px 8px 0;
-    }
-    .marriage-promise {
       color: #db2777;
-      text-align: center;
-      font-weight: 700;
-      padding: 10px 0;
-      border-top: 1px solid #fbcfe8;
-      border-bottom: 1px solid #fbcfe8;
-      margin: 15px 0;
-    }
-    .signature {
-      text-align: center;
-      margin-top: 25px;
-      font-size: 0.95rem;
-      color: #db2777;
-      font-weight: 700;
+      font-weight: 800;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     }
 
-    /* Keyframe Animations */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.98); }
-      to { opacity: 1; transform: scale(1); }
-    }
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-    }
-  </style>
-</head>
-<body>
-
-  <audio id="bg-music" loop>
-    <source src="https://pub-c06346ee32ec4e5db8d03565651c3bb2.r2.dev/ye-tune-kya-kiya.mp3" type="audio/mp3">
-  </audio>
-
-  <div class="app-container">
-    
-    <div id="stage-countdown" class="stage">
-      <div id="countdown-text" class="countdown-text">3</div>
-    </div>
-
-    <div id="stage-loading" class="stage hidden">
-      <img src="https://api.iconify.design/twemoji:cat-face.svg" alt="Kitty" class="kitty-img">
-      <p style="color: #db2777; font-weight: 500;">Loading your birthday surprise...</p>
-    </div>
-
-    <div id="stage-intro" class="stage hidden">
-      <h1 class="pink-title">“Hey pondatiii its ur 24th birthday and 5th with me my love”!</h1>
-      <button onclick="goToCakeStage()" class="btn">Start the journey</button>
-    </div>
-
-    <div id="stage-cake" class="stage hidden">
-      <h2 id="cake-instruction" class="pink-title" style="font-size: 1.5rem;">Swipe anywhere to cut the cake!</h2>
-      <div onclick="cutTheCake()" id="cake-emoji" class="cake-avatar">🎂</div>
-      <button id="cake-next-btn" onclick="goToGalleryStage()" class="btn hidden">Next →</button>
-    </div>
-
-    <div id="stage-gallery" class="stage hidden">
-      <h2 class="pink-title" style="font-size: 1.5rem; margin-bottom: 15px;">Some Sweet Moments</h2>
-      
-      <div class="polaroid-frame">
-        <img id="main-slider-img" src="photo1.jpeg" alt="Memories">
-        <div id="main-slider-caption" class="polaroid-caption">Mine 💖</div>
-      </div>
-
-      <div class="slider-controls">
-        <button onclick="changeSlide(-1)" class="nav-btn">◀</button>
-        <span id="slide-index-counter" class="counter-tag">1 / 11</span>
-        <button onclick="changeSlide(1)" class="nav-btn">▶</button>
-      </div>
-
-      <button onclick="openMessageLetter()" class="btn">Open My Message</button>
-    </div>
-
-    <div id="stage-message" class="stage hidden">
-      <div class="letter-paper">
-        <h3 class="letter-header">A Special Message</h3>
-        <div class="letter-text">
-          <p style="font-weight: 700; color: #db2777;">Happiest 24th birthday papa,</p>
-          <p>im always happy to see u growing and im always with u and will be with u in all ur ups and down as I promised.
-          Enaku therium nambakula neraiya sanda and misunderstanding irku varuthunu but its all about a part of love so athalam iniku thooki oram vechitu enjoy ur day its ur day and alway be cheerful and joyful whatever happens.
-          aprm mukiyama unoda siripa niruthidatha ena analum bczz its what makes u the cuties popée of mine of all times so happiest birthday Ammu.
-          and na epaium solura mari unaku pana satyatha kandipa nera vethuven whatever happen we can talk and sort it and stay together forever na una kittu kandipa pogamaten as i promised so atha pathi epaium yosichi kavala padatha.
-          "odamba nala pathuku the very soon we r going to get married so be healthy papa"
-          I love u dii my goddess once again happy birthday papu may his year brings u all the joy and happiness to u and all ur wishes will definitely come true I manifest it for u.
-          and as I always say all ur bad comes to me and all ur goods and my goods comes to u papu once happiest birthday and I love u more then 3000 times mine💐 🤍 🫂 🧿 🥂</p>
-          <div class="signature">Priyadharshan Brindhaviathi❤️</div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <script>
-    let activeIndex = 0;
-    
-    // Arrays containing your photo order mapping and descriptive titles
-    const photoFiles = [
-      "photo1.jpeg", "photo2.jpeg", "photo3.jpeg", "photo4.jpeg", "photo5.jpeg",
-      "photo6.jpeg", "photo7.jpeg", "photo8.jpeg", "photo9.jpeg", "photo10.jpeg", "photo11.jpeg"
-    ];
-    
-    const photoCaptions = [
-      "Mine 💖", "That Beautiful Smile ✨", "Cutest Poppée 🥺", "My Ammu 🤍", "Together Forever 🫂",
-      "Every Single Day with You 🧿", "My Goddess 🥂", "Pure Happiness 💕", "Love You 3000 ♾️", "My Safest Escape 🥰", "Forever Yours ❤️"
-    ];
-
-    // Core Transitions
-    window.addEventListener('DOMContentLoaded', () => {
-      let num = 3;
-      const textNode = document.getElementById('countdown-text');
-      const loop = setInterval(() => {
-        num--;
-        if (num > 0) {
-          textNode.innerText = num;
-        } else {
-          textNode.innerText = "❤";
-          clearInterval(loop);
-          setTimeout(() => {
-            hideAndShow('stage-countdown', 'stage-loading');
-            setTimeout(() => {
-              hideAndShow('stage-loading', 'stage-intro');
-            }, 2500);
-          }, 700);
-        }
-      }, 1000);
-    });
-
-    function hideAndShow(oldId, newId) {
-      document.getElementById(oldId).classList.add('hidden');
-      document.getElementById(newId).classList.remove('hidden');
-    }
-
-    function goToCakeStage() {
-      document.getElementById('bg-music').play().catch(() => {});
-      hideAndShow('stage-intro', 'stage-cake');
-    }
-
-    function cutTheCake() {
-      document.getElementById('cake-instruction').innerText = "Happy Birthday, My Girl ! ❤️";
-      document.getElementById('cake-emoji').innerText = "🍰✨";
-      document.getElementById('cake-next-btn').classList.remove('hidden');
-      confetti({ particleCount: 120, spread: 70, origin: { y: 0.6 } });
-    }
-
-    function goToGalleryStage() {
-      hideAndShow('stage-cake', 'stage-gallery');
-    }
-
-    function openMessageLetter() {
-      hideAndShow('stage-gallery', 'stage-message');
-    }
-
-    function changeSlide(dir) {
-      activeIndex = (activeIndex + dir + photoFiles.length) % photoFiles.length;
-      document.getElementById('main-slider-img').src = photoFiles[activeIndex];
-      document.getElementById('main-slider-caption').innerText = photoCaptions[activeIndex];
-      document.getElementById('slide-index-counter').innerText = `${activeIndex + 1} / 11`;
-    }
-  </script>
-</body>
-</html>
+    /* Uniform Elegant Message Layout */
+    .letter-sheet {
+      background: white;
+      border-radius: 28px;
+      padding: 32px 24px;
+      text-align: left;
