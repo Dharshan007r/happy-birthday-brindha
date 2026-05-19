@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday Brindha! 💖</title>
+  <script src="https://cdn.jsdelivr.net/cdn.tailwindcss.com/3.4.1"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Playfair+Display:ital,wght@0,600;0,800;1,400&family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: #fbcfe8;
+      overflow-x: hidden;
+    }
+    .font-cinematic {
+      font-family: 'Playfair Display', serif;
+    }
+    .font-handwritten {
+      font-family: 'Caveat', cursive;
+    }
+    .bg-romantic-gradient {
+      background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 50%, #f472b6 100%);
+    }
+    /* Smooth Transitions matching the video */
+    .fade-enter {
+      opacity: 0;
+      transform: scale(0.96);
+    }
+    .fade-enter-active {
+      opacity: 1;
+      transform: scale(1);
+      transition: opacity 800ms ease-out, transform 800ms ease-out;
+    }
+    /* Image Grid Staggered Rotations */
+    .polaroid-1 { transform: rotate(-3deg); }
+    .polaroid-2 { transform: rotate(2deg); }
+    .polaroid-3 { transform: rotate(-1.5deg); }
+    .polaroid-4 { transform: rotate(3deg); }
+  </style>
+</head>
+<body class="min-h-screen w-full flex items-center justify-center p-4 selection:bg-pink-200 select-none bg-romantic-gradient">
+
+  <audio id="bg-music" loop>
+    <source src="https://pub-c06346ee32ec4e5db8d03565651c3bb2.r2.dev/ye-tune-kya-kiya.mp3" type="audio/mp3">
+  </audio>
+
+  <div id="app-container" class="w-full max-w-md min-h-[75vh] flex flex-col items-center justify-center relative transition-all duration-700">
+    
+    <div id="stage-countdown" class="flex flex-col items-center justify-center text-center space-y-4">
+      <div id="countdown-number" class="text-8xl font-black text-pink-600 tracking-tighter transition-all duration-300 transform scale-100">3</div>
+      <p class="text-xs uppercase tracking-[0.2em] text-pink-700/60 font-bold">Preparing Your Cinematic Journey</p>
+    </div>
+
+    <div id="stage-loading" class="hidden flex flex-col items-center justify-center text-center space-y-6">
+      <div class="relative w-28 h-28 flex items-center justify-center bg-white/60 rounded-full p-4 shadow-xl shadow-pink-300/40 border border-white/40 animate-bounce">
+        <img src="https://api.iconify.design/twemoji:cat-face.svg" alt="Hello Kitty" class="w-20 h-20">
+        <span class="absolute -top-1 -right-1 text-3xl animate-pulse">🎀</span>
+      </div>
+      <div class="space-y-2">
+        <h3 class="text-xl font-bold text-pink-900 tracking-wide">Loading your birthday surprise...</h3>
+        <p class="text-xs text-pink-700/70 font-medium">Unlocking precious files for Brindha</p>
+      </div>
+    </div>
+
+    <div id="stage-intro" class="hidden w-full bg-white/40 backdrop-blur-md border border-white/40 rounded-[2.5rem] p-8 shadow-2xl text-center space-y-8 fade-enter">
+      <div class="space-y-3">
+        <span class="text-xs font-bold tracking-[0.25em] uppercase text-pink-700/70 block">May 21, 2026</span>
+        <h1 class="text-4xl font-black text-pink-950 font-cinematic leading-tight">
+          My girl was born <span class="text-pink-600 underline decoration-wavy underline-offset-8">24 years</span> ago today!
+        </h1>
+        <p class="text-xs italic text-pink-900/60 font-medium">Ah, it's still a little vague inside...</p>
+      </div>
+      
+      <div class="pt-2">
+        <button onclick="goToCakeStage()" class="w-full py-4 bg-pink-600 text-white font-bold rounded-2xl shadow-xl shadow-pink-500/30 hover:bg-pink-700 transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 tracking-wide flex items-center justify-center space-x-2">
+          <span>👉 Start the journey</span>
+        </button>
+      </div>
+    </div>
+
+    <div id="stage-cake" class="hidden w-full text-center space-y-8 fade-enter">
+      <div class="space-y-2">
+        <h2 id="cake-title" class="text-2xl font-black text-pink-950 tracking-tight">Swipe or click to cut the cake!</h2>
+        <p id="cake-subtitle" class="text-xs text-pink-800/60 font-medium">Let's make a beautiful wish together</p>
+      </div>
+
+      <div onclick="executeCakeCut()" id="cake-box" class="cursor-pointer bg-white/50 backdrop-blur-md rounded-3xl border border-pink-200/60 p-10 shadow-xl flex flex-col items-center justify-center transition-all duration-300 transform hover:scale-[1.02] active:scale-95 group relative overflow-hidden">
+        <div id="cake-graphic" class="text-8xl filter drop-shadow-md animate-bounce duration-1000">🎂</div>
+        <div id="cut-indicator" class="mt-6 px-4 py-1.5 bg-pink-100 text-pink-700 text-xs tracking-widest uppercase font-bold rounded-full border border-pink-200 group-hover:bg-pink-200 transition-colors animate-pulse">
+          [ Click to Cut ]
+        </div>
+      </div>
+
+      <button id="cake-next-btn" onclick="goToGalleryStage()" class="hidden mx-auto px-8 py-3.5 bg-pink-600 text-white font-bold rounded-full shadow-lg hover:bg-pink-700 transition-all duration-300 transform hover:scale-105 flex items-center space-x-2">
+        <span>View Memories</span>
+        <i class="fa-solid fa-arrow-right text-xs"></i>
+      </button>
+    </div>
+
+    <div id="stage-gallery" class="hidden w-full text-center space-y-8 fade-enter">
+      <div class="space-y-1">
+        <h2 class="text-3xl font-black text-pink-950 font-cinematic">Some Sweet Moments</h2>
+        <p class="text-xs font-bold uppercase tracking-widest text-pink-700/60">Since September 27, 2021 ♾️</p>
+      </div>
+
+      <div class="w-full relative px-4 flex flex-col items-center">
+        <div id="gallery-slider" class="w-full h-[400px] relative flex items-center justify-center">
+          
+          <div class="slide-item absolute inset-0 bg-white p-4 pb-12 rounded-2xl shadow-2xl border border-gray-100 polaroid-1 transition-all duration-500 transform opacity-100 z-10 flex flex-col">
+            <img src="1000021087.jpg" class="w-full h-full object-cover rounded-xl" alt="Us 1">
+            <div class="absolute bottom-3 left-0 right-0 text-center font-handwritten text-2xl text-pink-800">You & Me Against the World ❤️</div>
+          </div>
+
+          <div class="slide-item absolute inset-0 bg-white p-4 pb-12 rounded-2xl shadow-2xl border border-gray-100 polaroid-2 transition-all duration-500 transform opacity-0 z-0 scale-95 flex flex-col">
+            <img src="1000021007.jpg" class="w-full h-full object-cover rounded-xl" alt="Us 2">
+            <div class="absolute bottom-3 left-0 right-0 text-center font-handwritten text-2xl text-pink-800">Your Smile is Everything 😊</div>
+          </div>
+
+          <div class="slide-item absolute inset-0 bg-white p-4 pb-12 rounded-2xl shadow-2xl border border-gray-100 polaroid-3 transition-all duration-500 transform opacity-0 z-0 scale-95 flex flex-col">
+            <img src="1000020850.jpg" class="w-full h-full object-cover rounded-xl" alt="Us 3">
+            <div class="absolute bottom-3 left-0 right-0 text-center font-handwritten text-2xl text-pink-800">With My Beautiful Queen 👑</div>
+          </div>
+
+          <div class="slide-item absolute inset-0 bg-white p-4 pb-12 rounded-2xl shadow-2xl border border-gray-100 polaroid-4 transition-all duration-500 transform opacity-0 z-0 scale-95 flex flex-col">
+            <img src="1000020882.jpg" class="w-full h-full object-cover rounded-xl" alt="Us 4">
+            <div class="absolute bottom-3 left-0 right-0 text-center font-handwritten text-2xl text-pink-800">Fun Times Together 🤪</div>
+          </div>
+
+          <div class="slide-item absolute inset-0 bg-white p-4 pb-12 rounded-2xl shadow-2xl border border-gray-100 polaroid-1 transition-all duration-500 transform opacity-0 z-0 scale-95 flex flex-col">
+            <img src="20c3a7e3-c4db-40c1-96fc-60ce1454ec50.jpeg" class="w-full h-full object-cover rounded-xl" alt="Us 5">
+            <div class="absolute bottom-3 left-0 right-0 text-center font-handwritten text-2xl text-pink-800">My Safest Place 🫂</div>
+          </div>
+
+          <div class="slide-item absolute inset-0 bg-white p-4 pb-12 rounded-2xl shadow-2xl border border-gray-100 polaroid-2 transition-all duration-500 transform opacity-0 z-0 scale-95 flex flex-col">
+            <img src="IMG_2085.jpg" class="w-full h-full object-cover rounded-xl" alt="Us 6">
+            <div class="absolute bottom-3 left-0 right-0 text-center font-handwritten text-2xl text-pink-800">Mesmerized By You ✨</div>
+          </div>
+
+          <div class="slide-item absolute inset-0 bg-white p-4 pb-12 rounded-2xl shadow-2xl border border-gray-100 polaroid-3 transition-all duration-500 transform opacity-0 z-0 scale-95 flex flex-col">
+            <img src="5828ddb7-dfec-45ed-b981-6e007f4b38e0.jpeg" class="w-full h-full object-cover rounded-xl" alt="Us 7">
+            <div class="absolute bottom-3 left-0 right-0 text-center font-handwritten text-2xl text-pink-800">Those Beautiful Eyes 👀</div>
+          </div>
+
+          <div class="slide-item absolute inset-0 bg-white p-4 pb-12 rounded-2xl shadow-2xl border border-gray-100 polaroid-4 transition-all duration-500 transform opacity-0 z-0 scale-95 flex flex-col">
+            <img src="8d872a4b-5599-4ec5-bd16-ad8e23576597.jpeg" class="w-full h-full object-cover rounded-xl" alt="Us 8">
+            <div class="absolute bottom-3 left-0 right-0 text-center font-handwritten text-2xl text-pink-800">By the Sea with My Love 🌊</div>
+          </div>
+
+          <div class="slide-item absolute inset-0 bg-white p-4 pb-12 rounded-2xl shadow-2xl border border-gray-100 polaroid-1 transition-all duration-500 transform opacity-0 z-0 scale-95 flex flex-col">
+            <img src="ef1beada-8e3e-41aa-9a7a-7e6cc3e7be6d.jpeg" class="w-full h-full object-cover rounded-xl" alt="Us 9">
+            <div class="absolute bottom-3 left-0 right-0 text-center font-handwritten text-2xl text-pink-800">Infinite Love 💋</div>
+          </div>
+
+        </div>
+
+        <div class="flex items-center justify-between w-full max-w-[220px] mt-6">
+          <button onclick="prevSlide()" class="w-10 h-10 bg-white/80 backdrop-blur rounded-full text-pink-700 shadow border border-pink-100 flex items-center justify-center hover:bg-white transition-colors">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+          <span id="slide-index-counter" class="text-xs font-bold text-pink-950 bg-white/50 backdrop-blur px-3 py-1 rounded-full border border-pink-200">1 / 9</span>
+          <button onclick="nextSlide()" class="w-10 h-10 bg-white/80 backdrop-blur rounded-full text-pink-700 shadow border border-pink-100 flex items-center justify-center hover:bg-white transition-colors">
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="pt-4">
+        <button onclick="goToMessageStage()" class="px-8 py-4 bg-pink-600 text-white font-bold rounded-2xl shadow-xl shadow-pink-500/20 hover:bg-pink-700 transform hover:-translate-y-0.5 transition-all w-[85%] mx-auto flex items-center justify-center space-x-2">
+          <i class="fa-solid fa-heart shadow-sm text-sm"></i>
+          <span>Open My Letter</span>
+        </button>
+      </div>
+    </div>
+
+    <div id="stage-message" class="hidden w-full bg-white/90 backdrop-blur-xl border border-pink-100 rounded-[2.5rem] p-8 shadow-2xl space-y-6 max-h-[85vh] overflow-y-auto fade-enter relative">
+      
+      <div class="text-center space-y-1 sticky top-0 bg-white/95 pb-4 border-b border-pink-100 z-20">
+        <span class="text-[10px] font-extrabold tracking-[0.3em] uppercase text-pink-500/80 block">For You, Papa</span>
+        <h2 class="text-3xl font-black text-pink-950 font-cinematic">A Special Message</h2>
+        <div class="flex items-center justify-center space-x-2 text-xs text-pink-600/50 pt-1">
+          <span>🧿</span><span>🤍</span><span>✨</span>
+        </div>
+      </div>
+
+      <div class="space-y-4 text-gray-800 text-[14px] leading-relaxed tracking-wide font-medium">
+        <p class="font-bold text-base text-pink-700 font-cinematic italic">Happiest 24th birthday papa,</p>
+        
+        <p>Im always happy to see u growing and im always with u and will be with u in all ur ups and down as I promised.</p>
+        
+        <p class="bg-pink-50/70 border-l-4 border-pink-400 p-3 rounded-r-xl text-pink-950 italic">
+          Enaku therium nambakula neraiya sanda and misunderstanding irku varuthunu but its all about a part of love so athalam iniku thooki oram vechitu enjoy ur day its ur day and alway be cheerful and joyful whatever happens.
+        </p>
+        
+        <p>Aprm mukiyama unoda siripa niruthidatha ena analum bczz its what makes u the cuties popée of mine of all times so happiest birthday Ammu.</p>
+        
+        <p>And na epaium solura mari unaku pana satyatha kandipa nera vethuven whatever happen we can talk and sort it and stay together forever na una kittu kandipa pogamaten as i promised so atha pathi epaium yosichi kavala padatha.</p>
+        
+        <p class="font-bold text-pink-700 text-center py-2 border-y border-pink-100 font-cinematic tracking-normal text-base">
+          ✨ "Odamba nala pathuku the very soon we r going to get married so be healthy papa" ✨
+        </p>
+        
+        <p>I love u dii my goddess once again happy birthday papu may his year brings u all the joy and happiness to u and all ur wishes will definitely come true I manifest it for u.</p>
+        
+        <p class="bg-gray-50 p-3 rounded-xl border border-gray-100 text-xs text-gray-600">
+          And as I always say all ur bad comes to me and all ur goods and my goods comes to u papu once happiest birthday and I love u more then 3000 times mine💐 🤍 🫂 🧿 🥂
+        </p>
+      </div>
+
+      <div class="pt-6 border-t border-pink-100 text-center space-y-1">
+        <p class="text-xs text-pink-800/60 font-bold uppercase tracking-widest">With Infinite Love</p>
+        <p class="font-handwritten text-3xl text-pink-700 tracking-wide font-bold">Forever yours, Priyadharshan Brindhaviathi❤️</p>
+      </div>
+
+      <div class="text-center pt-2">
+        <button onclick="resetFlow()" class="text-[10px] font-extrabold uppercase tracking-widest text-pink-400 hover:text-pink-600 transition-colors">
+          <i class="fa-solid fa-rotate-right mr-1"></i> Replay From Start
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Navigation Control Architecture
+    let currentSlideIndex = 0;
+    const totalSlides = 9;
+
+    // 1. Trigger Initial Countdown Loop on Window Activation
+    window.addEventListener('DOMContentLoaded', () => {
+      let count = 3;
+      const countEl = document.getElementById('countdown-number');
+      
+      const interval = setInterval(() => {
+        count--;
+        if (count > 0) {
+          countEl.innerText = count;
+          // Soft pulse animation logic
+          countEl.classList.remove('scale-100');
+          countEl.classList.add('scale-120', 'opacity-50');
+          setTimeout(() => {
+            countEl.classList.remove('scale-120', 'opacity-50');
+            countEl.classList.add('scale-100');
+          }, 150);
+        } else if (count === 0) {
+          countEl.innerText = "❤";
+          clearInterval(interval);
+          // Auto route to Hello Kitty Loader
+          setTimeout(() => {
+            switchStage('stage-countdown', 'stage-loading');
+            triggerLoadingScreen();
+          }, 800);
+        }
+      }, 1000);
+    });
+
+    // 2. Loading Screen Logic
+    function triggerLoadingScreen() {
+      setTimeout(() => {
+        switchStage('stage-loading', 'stage-intro');
+      }, 3500); // Loads gracefully for 3.5s
+    }
+
+    // 3. Page Routing Helper System
+    function switchStage(currentId, nextId) {
+      const currentEl = document.getElementById(currentId);
+      const nextEl = document.getElementById(nextId);
+      
+      currentEl.classList.add('hidden');
+      nextEl.classList.remove('hidden');
+      nextEl.classList.add('fade-enter-active');
+    }
+
+    // 4. Navigation Actions
+    function goToCakeStage() {
+      // Audio Engine boots dynamically here on explicit user interactions to comply with browser privacy rules
+      const music = document.getElementById('bg-music');
+      music.play().catch(err => console.log("Audio waiting for absolute user trust profile"));
+      switchStage('stage-intro', 'stage-cake');
+    }
+
+    function executeCakeCut() {
+      const title = document.getElementById('cake-title');
+      const subtitle = document.getElementById('cake-subtitle');
+      const graphic = document.getElementById('cake-graphic');
+      const indicator = document.getElementById('cut-indicator');
+      const nextBtn = document.getElementById('cake-next-btn');
+
+      // Change Content State
+      title.innerText = "Happy Birthday, Brindha! 💖";
+      subtitle.innerText = "The wish has been locked into the universe ✨";
+      graphic.innerText = "🍰✨";
+      indicator.classList.add('hidden');
+      nextBtn.classList.remove('hidden');
+
+      // Double Confetti Burst
+      confetti({
+        particleCount: 180,
+        spread: 90,
+        origin: { y: 0.6 },
+        colors: ['#db2777', '#f472b6', '#fce7f3', '#ffffff']
+      });
+    }
+
+    function goToGalleryStage() {
+      switchStage('stage-cake', 'stage-gallery');
+    }
+
+    function goToMessageStage() {
+      switchStage('stage-gallery', 'stage-message');
+    }
+
+    // 5. Image Carousel Controller Engine
+    function updateSlides() {
+      const slides = document.querySelectorAll('.slide-item');
+      slides.forEach((slide, index) => {
+        slide.classList.remove('opacity-100', 'z-10', 'scale-100');
+        slide.classList.add('opacity-0', 'z-0', 'scale-95');
+        
+        if (index === currentSlideIndex) {
+          slide.classList.remove('opacity-0', 'z-0', 'scale-95');
+          slide.classList.add('opacity-100', 'z-10', 'scale-100');
+        }
+      });
+      document.getElementById('slide-index-counter').innerText = `${currentSlideIndex + 1} / ${totalSlides}`;
+    }
+
+    function nextSlide() {
+      currentSlideIndex = (currentSlideIndex + 1) % totalSlides;
+      updateSlides();
+    }
+
+    function prevSlide() {
+      currentSlideIndex = (currentSlideIndex - 1 + totalSlides) % totalSlides;
+      updateSlides();
+    }
+
+    // 6. Hard Replay Loop Setup
+    function resetFlow() {
+      currentSlideIndex = 0;
+      updateSlides();
+      
+      // Reset Cake Interactivity Box
+      document.getElementById('cake-title').innerText = "Swipe or click to cut the cake!";
+      document.getElementById('cake-subtitle').innerText = "Let's make a beautiful wish together";
+      document.getElementById('cake-graphic').innerText = "🎂";
+      document.getElementById('cut-indicator').document.classList.remove('hidden');
+      document.getElementById('cake-next-btn').classList.add('hidden');
+
+      document.getElementById('stage-message').classList.add('hidden');
+      document.getElementById('stage-countdown').classList.remove('hidden');
+      
+      // Retrigger countdown mechanism
+      window.location.reload();
+    }
+  </script>
+</body>
+</html>
