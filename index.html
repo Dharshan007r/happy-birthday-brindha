@@ -41,7 +41,7 @@ body {
 }
 
 @keyframes explode {
-  0% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; }
+  0 { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; }
   100% { transform: translate(var(--mx), var(--my)) scale(0) rotate(360deg); opacity: 0; }
 }
 
@@ -63,7 +63,7 @@ body {
 @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
 @keyframes zoomIn { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-/* Standard UI Elements */
+/* UI Text styling */
 .countdown-text { font-size: 7rem; font-weight: 300; color: white; text-shadow: 0 0 20px rgba(219,39,119,0.6); }
 .kitty-img { width: 95px; height: 95px; margin-bottom: 20px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1)); }
 .pink-title { color: white; font-size: 1.6rem; font-weight: 700; line-height: 1.4; margin-bottom: 25px; padding: 0 5px; text-shadow: 0 2px 4px rgba(0,0,0,0.15); }
@@ -179,12 +179,44 @@ function popBalloon(balloonEl, x, y) {
   setTimeout(() => document.body.style.animation = "", 150);
 }
 
-window.addEventListener('DOMContentLoaded', () => { let num = 3; const textNode = document.getElementById('countdown-text'); const loop = setInterval(() => { num--; if (num > 0) { textNode.innerText = num; } else { textNode.innerText = "❤"; clearInterval(loop); setTimeout(() => { hideAndShow('stage-countdown', 'stage-loading'); setTimeout(() => { hideAndShow('stage-loading', 'stage-intro'); }, 2200); }, 700); } }, 1000); });
-function hideAndShow(oldId, newId) { document.getElementById(oldId).classList.add('hidden'); document.getElementById(newId).classList.remove('hidden'); }
+// Fixed Countdown Loader - Completely isolated from audio bugs
+window.addEventListener('DOMContentLoaded', () => { 
+  let num = 3; 
+  const textNode = document.getElementById('countdown-text'); 
+  if (!textNode) return;
+  
+  const loop = setInterval(() => { 
+    num--; 
+    if (num > 0) { 
+      textNode.innerText = num; 
+    } else { 
+      textNode.innerText = "❤"; 
+      clearInterval(loop); 
+      setTimeout(() => { 
+        hideAndShow('stage-countdown', 'stage-loading'); 
+        setTimeout(() => { 
+          hideAndShow('stage-loading', 'stage-intro'); 
+        }, 2200); 
+      }, 700); 
+    } 
+  }, 1000); 
+});
+
+function hideAndShow(oldId, newId) { 
+  const oldStage = document.getElementById(oldId);
+  const newStage = document.getElementById(newId);
+  if(oldStage) oldStage.classList.add('hidden'); 
+  if(newStage) newStage.classList.remove('hidden'); 
+}
 
 function startJourneyAndMusic() { 
-  const music = document.getElementById('birthday-track'); 
-  if (music) { music.play().catch(e => console.log(e)); } 
+  // Safe try/catch wrap so a missing track never stops the application execution
+  try {
+    const music = document.getElementById('birthday-track'); 
+    if (music) { music.play().catch(e => console.log("Audio play blocked or file not found, skipping safely.")); } 
+  } catch (err) {
+    console.log("Audio asset error handled safely.");
+  }
   hideAndShow('stage-intro', 'stage-cake'); 
   setInterval(createHeart, 350);
 }
@@ -219,8 +251,10 @@ function triggerGrandFinaleAndLetter() {
 
   setTimeout(() => {
     const letter = document.getElementById('letter-paper');
-    letter.style.display = 'block';
-    letter.style.animation = 'zoomIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+    if(letter) {
+      letter.style.display = 'block';
+      letter.style.animation = 'zoomIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+    }
     setTimeout(() => { startTypewriterReveal(); }, 800);
   }, 2500);
 }
@@ -239,6 +273,7 @@ function massiveCrackerBurst(x, y) {
 
 function startTypewriterReveal() {
   const textContainer = document.getElementById('typewriter-text');
+  if(!textContainer) return;
   textContainer.innerHTML = '';
   const allLines = rawMessage.split('\n');
   
@@ -258,3 +293,33 @@ function startTypewriterReveal() {
     if (currentLine < lines.length) {
       lines[currentLine].style.opacity = '1';
       lines[currentLine].style.transform = 'translateY(0)';
+      currentLine++;
+      let nextDelay = 1200;
+      if (currentLine < lines.length) {
+         if (lines[currentLine].textContent.trim() === '') nextDelay = 500;
+         if (lines[currentLine].textContent.includes('Enaku therium')) nextDelay = 1800;
+      }
+      setTimeout(revealNextLine, nextDelay);
+    } else {
+      const sig = document.getElementById('signature-block');
+      if(sig) {
+        sig.style.display = 'block';
+        sig.style.animation = 'zoomIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards';
+      }
+    }
+  }
+  revealNextLine();
+}
+
+function changeSlide(dir) { 
+  activeIndex = (activeIndex + dir + photoFiles.length) % photoFiles.length; 
+  const imgEl = document.getElementById('main-slider-img');
+  const capEl = document.getElementById('main-slider-caption');
+  const countEl = document.getElementById('slide-index-counter');
+  if(imgEl) imgEl.src = photoFiles[activeIndex]; 
+  if(capEl) capEl.innerText = photoCaptions[activeIndex]; 
+  if(countEl) countEl.innerText = `${activeIndex + 1} / 11`; 
+}
+</script>
+</body>
+</html>
