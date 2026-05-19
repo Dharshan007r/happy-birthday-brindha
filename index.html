@@ -11,7 +11,7 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      -webkit-tap-highlight-color: transparent; /* Removes ugly blue box on phone taps */
+      -webkit-tap-highlight-color: transparent;
     }
     body {
       background-color: #fbcfe8; 
@@ -26,7 +26,7 @@
     }
     .app-container {
       width: 100%;
-      max-width: 360px; /* Optimized strictly for mobile screen widths */
+      max-width: 360px;
       min-height: 460px;
       display: flex;
       flex-direction: column;
@@ -71,7 +71,7 @@
       background-color: #f472b6;
       color: white;
       border: none;
-      padding: 14px 35px; /* Slightly larger for easier finger tapping */
+      padding: 14px 35px;
       border-radius: 25px;
       font-size: 0.95rem;
       font-weight: 600;
@@ -89,7 +89,6 @@
       cursor: pointer;
     }
 
-    /* Fixed Polaroid Layout for Mobile Displays */
     .polaroid-frame {
       background: white;
       padding: 10px;
@@ -126,7 +125,7 @@
     .nav-btn {
       background: white;
       border: none;
-      width: 44px; /* Scaled up touch target size for mobile thumbs */
+      width: 44px;
       height: 44px;
       border-radius: 50%;
       color: #db2777;
@@ -213,6 +212,10 @@
 </head>
 <body>
 
+  <audio id="birthday-track" loop preload="auto">
+    <source src="birthday-song.mp3" type="audio/mpeg">
+  </audio>
+
   <div class="app-container">
     
     <div id="stage-countdown" class="stage">
@@ -226,7 +229,7 @@
 
     <div id="stage-intro" class="stage hidden">
       <h1 class="pink-title">“Hey pondatiii its ur 24th birthday and 5th with me my love”</h1>
-      <button onclick="goToCakeStage()" class="btn">Start the journey</button>
+      <button onclick="startJourneyAndMusic()" class="btn">Start the journey</button>
     </div>
 
     <div id="stage-cake" class="stage hidden">
@@ -321,7 +324,15 @@
       document.getElementById(newId).classList.remove('hidden');
     }
 
-    function goToCakeStage() {
+    // Safely plays music when she taps the physical screen button
+    // This stops mobile browsers from breaking or muting the sound
+    function startJourneyAndMusic() {
+      const music = document.getElementById('birthday-track');
+      if (music) {
+        music.play().catch(function(error) {
+          console.log("Mobile browser gesture block bypassed:", error);
+        });
+      }
       hideAndShow('stage-intro', 'stage-cake');
     }
 
