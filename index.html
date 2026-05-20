@@ -3,17 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Happy Birthday Brindhavathi Priyadharshan! 💖</title>
+<title>Happy Birthday Brindha! 💖</title>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
-/* Dynamic Moving Background */
 body { 
   background: linear-gradient(-45deg, #fbcfe8, #f472b6, #db2777, #9333ea);
   background-size: 400% 400%;
   animation: gradientBG 15s ease infinite;
-  font-family: sans-serif; 
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
   min-height: 100vh; 
   display: flex; 
   align-items: center; 
@@ -30,158 +29,223 @@ body {
 .stage { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; }
 .hidden { display: none !important; }
 
-/* Tap Heart Particles */
-.tap-heart {
-  position: fixed;
-  color: #ff69b4;
-  font-size: 24px;
-  pointer-events: none;
-  z-index: 9999;
-  animation: explode 0.8s ease-out forwards;
-}
-
-@keyframes explode {
-  0% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; }
-  100% { transform: translate(var(--mx), var(--my)) scale(0) rotate(360deg); opacity: 0; }
-}
-
-/* Drifting Floating Hearts */
+/* Hearts floating back layer */
 .heart { position: fixed; color: #ffffff; font-size: 20px; animation: float 4s linear infinite; opacity: 0; pointer-events: none; z-index: 1; filter: drop-shadow(0 0 5px rgba(244,114,182,0.5)); }
 @keyframes float { 0% { transform: translateY(105vh) scale(0.6); opacity: 0; } 10% { opacity: 0.5; } 90% { opacity: 0.5; } 100% { transform: translateY(-10vh) scale(1.3); opacity: 0; } }
 
-/* Pop-able Balloons */
-.balloon-pop { 
-  position: fixed; font-size: 3rem; cursor: pointer; animation: floatBalloon 7s linear forwards; 
-  user-select: none; z-index: 15; 
-}
-@keyframes floatBalloon { 
-  0% { transform: translateY(110vh) rotate(0deg); opacity: 1; } 
-  80% { opacity: 1; } 
-  100% { transform: translateY(-20vh) rotate(30deg); opacity: 0; } 
-}
+.balloon-pop { position: fixed; font-size: 3rem; cursor: pointer; animation: floatBalloon 7s linear forwards; user-select: none; z-index: 15; }
+@keyframes floatBalloon { 0% { transform: translateY(110vh) rotate(0deg); opacity: 1; } 80% { opacity: 1; } 100% { transform: translateY(-20vh) rotate(30deg); opacity: 0; } }
 
 @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
 @keyframes zoomIn { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-@keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+@keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
-/* UI Text styling */
+/* Shared text & button primitives */
 .countdown-text { font-size: 7rem; font-weight: 300; color: white; text-shadow: 0 0 20px rgba(219,39,119,0.6); }
 .kitty-img { width: 95px; height: 95px; margin-bottom: 20px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1)); }
-.pink-title { color: white; font-size: 1.6rem; font-weight: 700; line-height: 1.4; margin-bottom: 25px; padding: 0 5px; text-shadow: 0 2px 4px rgba(0,0,0,0.15); }
+.pink-title { color: white; font-size: 1.6rem; font-weight: 700; line-height: 1.4; margin-bottom: 25px; text-shadow: 0 2px 4px rgba(0,0,0,0.15); }
 .btn { background: white; color: #db2777; border: none; padding: 15px 40px; border-radius: 30px; font-size: 1rem; font-weight: 700; cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.15); transition: 0.3s; text-transform: uppercase; letter-spacing: 0.5px; z-index: 20; }
-.btn:active { transform: scale(0.95); background-color: #fff1f2; }
-.cake-avatar { font-size: 7.5rem; margin: 20px 0; cursor: pointer; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.15)); z-index: 20; transition: 0.2s;}
-.cake-avatar:active { transform: scale(0.9); }
 
-/* Premium Gallery Styling */
-.polaroid-frame { background: white; padding: 12px; padding-bottom: 55px; border-radius: 12px; box-shadow: 0 20px 40px rgba(0,0,0,0.25); width: 100%; max-width: 290px; position: relative; margin-bottom: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; height: auto; animation: zoomIn 0.5s ease-out; z-index: 10; }
-.polaroid-frame img { width: 100%; height: auto; object-fit: contain; border-radius: 6px; display: block; max-height: 380px; }
+.cake-avatar { font-size: 7.5rem; margin: 15px 0; cursor: pointer; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.15)); z-index: 20; }
+
+/* Polaroid Gallery */
+.polaroid-frame { background: white; padding: 12px; padding-bottom: 55px; border-radius: 12px; box-shadow: 0 20px 40px rgba(0,0,0,0.25); width: 100%; max-width: 290px; position: relative; margin-bottom: 20px; animation: zoomIn 0.5s ease-out; }
+.polaroid-frame img { width: 100%; height: auto; object-fit: contain; border-radius: 6px; max-height: 380px; }
 .polaroid-caption { position: absolute; bottom: 14px; left: 0; right: 0; font-size: 1.1rem; color: #db2777; font-weight: 700; font-style: italic; }
-.slider-controls { display: flex; align-items: center; gap: 30px; margin-bottom: 25px; z-index: 10; }
-.nav-btn { background: white; border: none; width: 48px; height: 48px; border-radius: 50%; color: #db2777; font-size: 1.2rem; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.15); display: flex; align-items: center; justify-content: center; transition: 0.2s; }
-.nav-btn:active { transform: scale(0.85); }
+.slider-controls { display: flex; align-items: center; gap: 30px; margin-bottom: 25px; }
+.nav-btn { background: white; border: none; width: 48px; height: 48px; border-radius: 50%; color: #db2777; font-size: 1.2rem; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.15); display: flex; align-items: center; justify-content: center; }
 .counter-tag { background: rgba(255,255,255,0.25); backdrop-filter: blur(5px); padding: 6px 18px; border-radius: 20px; font-size: 0.85rem; color: white; font-weight: 700; border: 1px solid rgba(255,255,255,0.3); }
 
-/* --- VIDEO-STYLE FOLDING GREETING CARD --- */
-.card-wrapper {
+
+/* ========================================================
+   EXACT RECONSTRUCTION OF VIDEO CARD (NEON BORDER, UPWARD FLAP)
+   ======================================================== */
+.video-card-glow-frame {
   width: 100%;
-  max-width: 320px;
+  max-width: 315px;
+  height: 430px;
+  background: transparent;
+  border: 4px solid #f472b6; /* Pink inner neon border glowing line from video */
+  border-radius: 20px;
+  box-shadow: 0 0 15px #f472b6, 0 20px 40px rgba(0,0,0,0.4);
   position: relative;
-  margin-top: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Card Cover View (Matches Video Setup) */
-.video-card-cover {
-  background: linear-gradient(135deg, #4c1d95, #2e1065);
-  border: 3px solid #f472b6;
-  border-radius: 20px;
-  padding: 35px 20px;
+/* Inner Core Layout Box Container */
+.video-card-body {
   width: 100%;
-  height: 390px;
+  height: 100%;
+  background: #2e1065; /* Deep luxury purple window foundation from the frame video */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  overflow: hidden;
+  border-radius: 16px;
+}
+
+/* Card Cover: Flipping Upward/Splitting Flap Exactly Like Video */
+.video-card-flap-cover {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: #3b0764; /* Vibrant royal purple face */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  padding: 30px 20px 20px 20px;
+  z-index: 10;
   cursor: pointer;
-  animation: zoomIn 0.6s ease-out, pulse 3s infinite ease-in-out;
-  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+  transform-origin: top center; /* Makes it open upwards along the axis like video */
+  transition: transform 1.1s cubic-bezier(0.66, 0, 0.12, 1), opacity 0.8s;
+  border: 1px solid rgba(255,255,255,0.1);
 }
 
-.cover-title-top { color: #fbcfe8; font-size: 1.3rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
-.cover-mid-graphics { display: flex; flex-direction: column; align-items: center; margin: 20px 0; }
-.cover-balloons { font-size: 4.8rem; filter: drop-shadow(0 8px 12px rgba(0,0,0,0.4)); }
-.cover-ribbon { font-size: 3rem; margin-top: -15px; }
-.cover-name-bottom { color: white; font-size: 2rem; font-weight: 800; text-shadow: 0 4px 10px rgba(0,0,0,0.4); }
-.cover-tap-badge { background: #db2777; color: white; padding: 8px 22px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; margin-top: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+.cover-header-text { font-size: 1.3rem; font-weight: bold; color: #fbcfe8; letter-spacing: 1.5px; text-transform: uppercase; }
+.cover-center-art { display: flex; flex-direction: column; align-items: center; transform: translateY(-5px); }
+.cover-balloons-art { font-size: 5.2rem; filter: drop-shadow(0 10px 12px rgba(0,0,0,0.3)); }
 
-/* Card Inside Paper Sheet View (Slides Out Smoothly) */
-.letter-paper { 
-  background: #fff0f6; 
-  border: 3px solid #fbcfe8;
-  border-radius: 20px; 
-  padding: 22px 18px; 
-  text-align: left; 
-  box-shadow: 0 25px 50px rgba(0,0,0,0.3); 
-  max-height: 72vh; 
-  overflow-y: auto; 
-  width: 100%; 
-  display: none;
-  transform: translateY(30px) scale(0.95);
-  transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+/* The physical ribbon strip wrapping matching video structure cover */
+.cover-ribbon-line-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: -15px;
+}
+.horizontal-ribbon-bar {
+  width: 115%;
+  height: 14px;
+  background: #f472b6;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+}
+.center-bow-emoji {
+  font-size: 3.2rem;
+  margin-top: -24px;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
 }
 
-.letter-paper.reveal-active {
-  display: block;
-  transform: translateY(0) scale(1);
+.cover-footer-group { display: flex; flex-direction: column; align-items: center; width: 100%; }
+.cover-main-name { font-size: 2.1rem; font-weight: 900; color: white; text-shadow: 0 4px 10px rgba(0,0,0,0.6); margin-bottom: 12px; }
+.cover-tap-prompt { background: #db2777; color: white; font-size: 0.8rem; font-weight: 700; letter-spacing: 1px; padding: 6px 18px; border-radius: 20px; text-transform: uppercase; box-shadow: 0 4px 10px rgba(219,39,119,0.4); }
+
+/* Internal Card Viewport matching the Video scroll track */
+.inner-scroll-viewport {
+  flex: 1;
+  background: #ffffff; /* Brilliant white card sheet container inside */
+  border-radius: 12px;
+  padding: 18px 14px;
+  overflow-y: scroll; /* Forces scroll interactiveness explicitly */
+  text-align: left;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid #fbcfe8;
 }
 
-.letter-header { font-size: 1.3rem; color: #db2777; font-weight: 700; text-align: center; padding-bottom: 10px; border-bottom: 2px dashed #fbcfe8; margin-bottom: 18px; text-transform: uppercase; }
-.letter-text { font-size: 0.95rem; color: #374151; line-height: 1.65; white-space: pre-wrap; font-family: 'Courier New', Courier, monospace; }
-.signature { text-align: center; margin-top: 25px; font-size: 1rem; color: #db2777; font-weight: 700; border-top: 2px dashed #fbcfe8; padding-top: 15px; display: none; }
+/* Custom Video-Style Pink Scrollbar UI Track elements */
+.inner-scroll-viewport::-webkit-scrollbar { width: 7px; }
+.inner-scroll-viewport::-webkit-scrollbar-track { background: #f3f4f6; border-radius: 10px; }
+.inner-scroll-viewport::-webkit-scrollbar-thumb { background: #db2777; border-radius: 10px; }
+
+.card-message-heading { font-size: 1.25rem; color: #db2777; font-weight: 800; border-bottom: 2px dashed #fbcfe8; padding-bottom: 10px; margin-bottom: 14px; text-align: center; }
+.card-message-body-text { font-size: 0.95rem; color: #374151; line-height: 1.65; white-space: pre-wrap; font-family: -apple-system, sans-serif; font-weight: 500; }
+
+/* Fixed Locked Video Style Pink Action Button Container Row */
+.bottom-fixed-action-row {
+  width: 100%;
+  margin-top: 14px;
+}
+.pink-download-action-btn {
+  width: 100%;
+  background: #db2777; /* Crimson-pink video primary button execution */
+  color: white;
+  border: none;
+  padding: 15px;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 5px 12px rgba(219,39,119,0.35);
+  text-transform: uppercase;
+}
+
+/* Upward Flip Opened Trigger Rule class */
+.video-card-glow-frame.card-unfolded .video-card-flap-cover {
+  transform: rotateX(115deg) translateY(-20px);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ========================================================
+   GIFT SURPRISE SCREEN STAGE
+   ======================================================== */
+.gift-bounce-box { font-size: 7.5rem; margin: 25px 0; cursor: pointer; filter: drop-shadow(0 15px 20px rgba(0,0,0,0.3)); animation: bounce 2s infinite ease-in-out; }
 </style>
 </head>
-<body onclick="handleGlobalClick(event)">
+<body>
 
 <audio id="birthday-track" loop preload="auto"><source src="birthday-song.mp3" type="audio/mpeg"></audio>
 
 <div class="app-container">
   <div id="stage-countdown" class="stage"><div id="countdown-text" class="countdown-text">3</div></div>
   
-  <div id="stage-loading" class="stage hidden"><img src="https://api.iconify.design/twemoji:cat-face.svg" alt="Kitty" class="kitty-img"><p style="color: white; font-weight: 700;">Loading your birthday surprise my popee...</p></div>
+  <div id="stage-loading" class="stage hidden"><img src="https://api.iconify.design/twemoji:cat-face.svg" alt="Kitty" class="kitty-img"><p style="color: white; font-weight: 700;">Loading your birthday surprise...</p></div>
   
-  <div id="stage-intro" class="stage hidden"><h1 class="pink-title">“Hey pondatiii its ur 24th birthday and 5th with me my love”</h1><button onclick="startJourneyAndMusic()" class="btn">Start the day mine</button></div>
+  <div id="stage-intro" class="stage hidden"><h1 class="pink-title">“Hey pondatiii its ur 24th birthday and 5th with me my love”</h1><button onclick="startJourneyAndMusic()" class="btn">Start the journey</button></div>
   
   <div id="stage-cake" class="stage hidden">
     <h2 id="cake-instruction" class="pink-title">✨ Light the candle to make a wish! ✨</h2>
-    <div onclick="cutTheCake()" id="cake-emoji" class="cake-avatar">🎂🕯️</div>
+    <div onclick="lightTheCandle()" id="cake-emoji" class="cake-avatar">🎂🕯️</div>
     <button id="cake-next-btn" onclick="goToGalleryStage()" class="btn hidden">Memories →</button>
   </div>
   
-  <div id="stage-gallery" class="stage hidden"><h2 class="pink-title" style="margin-bottom: 15px;">Some Sweet Moments</h2><div class="polaroid-frame"><img id="main-slider-img" src="photo1.jpeg" alt="Memories"><div id="main-slider-caption" class="polaroid-caption">Mine 💖</div></div><div class="slider-controls"><button onclick="changeSlide(-1)" class="nav-btn">◀</button><span id="slide-index-counter" class="counter-tag">1 / 11</span><button onclick="changeSlide(1)" class="nav-btn">▶</button></div><button onclick="triggerGrandFinaleAndLetter()" class="btn">Open My Message</button></div>
+  <div id="stage-gallery" class="stage hidden"><h2 class="pink-title" style="margin-bottom: 15px;">Some Sweet Moments</h2><div class="polaroid-frame"><img id="main-slider-img" src="photo1.jpeg" alt="Memories"><div id="main-slider-caption" class="polaroid-caption">Mine 💖</div></div><div class="slider-controls"><button onclick="changeSlide(-1)" class="nav-btn">◀</button><span id="slide-index-counter" class="counter-tag">1 / 11</span><button onclick="changeSlide(1)" class="nav-btn">▶</button></div><button onclick="goToCardStage()" class="btn">Open My Message</button></div>
   
   <div id="stage-message" class="stage hidden">
-    <div class="card-wrapper">
+    <h2 class="pink-title" style="margin-bottom: 15px; font-style: italic;">A Special Message</h2>
+    <div class="video-card-glow-frame" id="glowFrame">
       
-      <div id="video-card-cover" class="video-card-cover" onclick="openVideoGreetingCard()">
-        <div class="cover-title-top">Happy Birthday</div>
-        <div class="cover-mid-graphics">
-          <div class="cover-balloons">🎈🎈🎈</div>
-          <div class="cover-ribbon">🎀</div>
+      <div class="video-card-body">
+        
+        <div class="video-card-flap-cover" id="flapCover" onclick="triggerUpwardUnfold()">
+          <div class="cover-header-text">Happy Birthday</div>
+          <div class="cover-center-art">
+            <div class="cover-balloons-art">🎈🎈🎈</div>
+            <div class="cover-ribbon-line-wrapper">
+              <div class="horizontal-ribbon-bar"></div>
+              <div class="center-bow-emoji">🎀</div>
+            </div>
+          </div>
+          <div class="cover-footer-group">
+            <div class="cover-main-name">Papa ❤️</div>
+            <div class="cover-tap-prompt">Click to Open</div>
+          </div>
         </div>
-        <div>
-          <div class="cover-name-bottom">Papa ❤️</div>
-          <div class="cover-tap-badge">Tap to Open Card</div>
+        
+        <div class="inner-scroll-viewport" id="scrollViewport">
+          <h3 class="card-message-heading">For My Precious Ammu</h3>
+          <div id="liveTypewriterBox" class="card-message-body-text"></div>
         </div>
-      </div>
-      
-      <div id="letter-paper" class="letter-paper">
-        <h3 class="letter-header">A Special Message</h3>
-        <div id="typewriter-text" class="letter-text"></div>
-        <div id="signature-block" class="signature">With Infinite Love<br>Priyadharshan Brindhaviathi❤️</div>
+        
+        <div class="bottom-fixed-action-row">
+          <button class="pink-download-action-btn" onclick="goToGiftStage()">Download ➔</button>
+        </div>
+
       </div>
 
     </div>
+  </div>
+
+  <div id="stage-gift" class="stage hidden">
+    <h1 class="pink-title" style="font-size: 2.2rem; font-style: italic;">One Last Thing...</h1>
+    <div id="gift-box" class="gift-bounce-box" onclick="revealUltimateSurprise()">🎁</div>
+    <h2 id="gift-caption" style="color: white; font-weight: 700; font-size: 1.3rem;">Tap the gift</h2>
   </div>
 </div>
 
@@ -192,54 +256,29 @@ const photoCaptions = ["Mine 💖", "That Beautiful Smile ✨", "Cutest Poppée 
 
 const rawMessage = `Happiest 24th birthday papa,
 
-Im always happy to see u growing and im always with u and will be with u in all ur ups and down as I promised.
+im always happy to see u growing and im always with u and will be with u in all ur ups and down as I promised.
 
 Enaku therium nambakula neraiya sanda and misunderstanding irku varuthunu but its all about a part of love so athalam iniku thooki oram vechitu enjoy ur day its ur day and alway be cheerful and joyful whatever happens.
 
-Aprm mukiyama unoda siripa niruthidatha ena analum bczz its what makes u the cuties popée of mine of all times so happiest birthday Ammu.
+aprm mukiyama unoda siripa niruthidatha ena analum bczz its what makes u the cuties popée of mine of all times so happiest birthday Ammu.
 
-And na epaium solura mari unaku pana satyatha kandipa nera vethuven whatever happen we can talk and sort it and stay together forever na una kittu kandipa pogamaten as i promised so atha pathi epaium yosichi kavala padatha.
+and na epaium solura mari unaku pana satyatha kandipa nera vethuven whatever happen we can talk and sort it and stay together forever na una kittu kandipa pogamaten as i promised so atha pathi epaium yosichi kavala padatha.
 
 "odamba nala pathuku the very soon we r going to get married so be healthy papa"
 
 I love u dii my goddess once again happy birthday papu may his year brings u all the joy and happiness to u and all ur wishes will definitely come true I manifest it for u.
 
-And as I always say all ur bad comes to me and all ur goods and my goods comes to u papu once happiest birthday and I love u more then 3000 times mine💐 🤍 🫂 🧿 🥂
-`;
+and as I always say all ur bad comes to me and all ur goods and my goods comes to u papu once happiest birthday and I love u more then 3000 times mine💐 🤍 🫂 🧿 🥂
 
-function handleGlobalClick(e) {
-  if (e.target.tagName === 'BUTTON' || e.target.classList.contains('cake-avatar') || e.closest && e.closest('#video-card-cover')) return;
-  spawnExplosion(e.clientX, e.clientY);
-}
-
-function spawnExplosion(x, y) {
-  for (let i = 0; i < 6; i++) {
-    const heart = document.createElement('div');
-    heart.innerHTML = Math.random() > 0.5 ? '💖' : '❤';
-    heart.style.position = 'fixed';
-    heart.style.color = '#ff69b4';
-    heart.style.fontSize = '24px';
-    heart.style.pointerEvents = 'none';
-    heart.style.zIndex = '9999';
-    heart.style.animation = 'explode 0.8s ease-out forwards';
-    heart.style.left = x + 'px';
-    heart.style.top = y + 'px';
-    const mx = (Math.random() - 0.5) * 200 + 'px';
-    const my = (Math.random() - 0.5) * 200 + 'px';
-    heart.style.setProperty('--mx', mx);
-    heart.style.setProperty('--my', my);
-    document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 800);
-  }
-}
+- With Infinite Love,
+Priyadharshan Brindhaviathi❤️`;
 
 function createHeart() { const heart = document.createElement("div"); heart.innerHTML = Math.random() > 0.5 ? "❤" : "💖"; heart.className = "heart"; heart.style.left = Math.random() * 100 + "vw"; heart.style.bottom = "-5vh"; heart.style.animationDuration = (Math.random() * 2 + 3) + "s"; document.body.appendChild(heart); setTimeout(() => heart.remove(), 4000); }
 
 let balloonInterval;
-const balloonEmojis = ['🎈', '🍬', '✨', '🎁'];
 function spawnInteractiveBalloon() {
   const balloon = document.createElement("div");
-  balloon.innerHTML = balloonEmojis[Math.floor(Math.random() * balloonEmojis.length)];
+  balloon.innerHTML = ['🎈', '🍬', '✨', '🎁'][Math.floor(Math.random() * 4)];
   balloon.className = "balloon-pop";
   balloon.style.left = (Math.random() * 80 + 10) + "vw";
   balloon.style.fontSize = (Math.random() * 2 + 2) + "rem"; 
@@ -251,7 +290,7 @@ function spawnInteractiveBalloon() {
 
 function popBalloon(balloonEl, x, y) {
   balloonEl.remove();
-  confetti({ particleCount: 40, spread: 60, origin: { x: x / window.innerWidth, y: y / window.innerHeight }, colors: ['#FFC0CB', '#FF69B4', '#D02090'] });
+  confetti({ particleCount: 40, spread: 60, origin: { x: x / window.innerWidth, y: y / window.innerHeight } });
   document.body.style.animation = "shake 0.15s";
   setTimeout(() => document.body.style.animation = "", 150);
 }
@@ -259,13 +298,10 @@ function popBalloon(balloonEl, x, y) {
 window.addEventListener('DOMContentLoaded', () => { 
   let num = 3; 
   const textNode = document.getElementById('countdown-text'); 
-  if (!textNode) return;
-  
   const loop = setInterval(() => { 
     num--; 
-    if (num > 0) { 
-      textNode.innerText = num; 
-    } else { 
+    if (num > 0) { textNode.innerText = num; } 
+    else { 
       textNode.innerText = "❤"; 
       clearInterval(loop); 
       setTimeout(() => { 
@@ -284,24 +320,21 @@ function hideAndShow(oldId, newId) {
 }
 
 function startJourneyAndMusic() { 
-  try {
-    const music = document.getElementById('birthday-track'); 
-    if (music) { music.play().catch(e => console.log("Audio play blocked.")); } 
-  } catch (err) {}
+  try { document.getElementById('birthday-track').play().catch(e => {}); } catch (err) {}
   hideAndShow('stage-intro', 'stage-cake'); 
   setInterval(createHeart, 350);
 }
 
-function cutTheCake() { 
-  document.getElementById('cake-instruction').innerText = "Happy Birthday My Girl ! ❤️"; 
-  document.getElementById('cake-emoji').innerText = "🍰✨"; 
+function lightTheCandle() { 
+  document.getElementById('cake-instruction').innerText = "Happy Birthday, My Girl ! ❤️"; 
+  document.getElementById('cake-emoji').innerText = "🎂✨"; 
   document.getElementById('cake-next-btn').classList.remove('hidden'); 
   document.body.style.animation = "shake 0.5s"; 
   triggerConfettiSideStreams();
 }
 
 function triggerConfettiSideStreams() {
-  var duration = 3 * 1000; var end = Date.now() + duration;
+  var duration = 2.5 * 1000; var end = Date.now() + duration;
   (function frame() {
     confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 } });
     confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 } });
@@ -314,79 +347,75 @@ function goToGalleryStage() {
   balloonInterval = setInterval(spawnInteractiveBalloon, 1500);
 }
 
-function triggerGrandFinaleAndLetter() {
+function goToCardStage() {
   hideAndShow('stage-gallery', 'stage-message');
   clearInterval(balloonInterval);
   document.querySelectorAll('.balloon-pop').forEach(b => b.remove());
 }
 
-/* Precise Video Animation Unfolding Execution Rule */
-function openVideoGreetingCard() {
-  const cover = document.getElementById('video-card-cover');
-  const paper = document.getElementById('letter-paper');
+// Fixed Upward Flip Execution logic
+function triggerUpwardUnfold() {
+  const frame = document.getElementById('glowFrame');
+  if (frame.classList.contains('card-unfolded')) return;
   
-  // Slide up and fade cover exactly like the video
-  cover.style.transform = 'translateY(-100px) scale(0.9)';
-  cover.style.opacity = '0';
+  frame.classList.add('card-unfolded');
   
-  triggerSequentialFireworks();
+  // Audio Burst celebration fireworks matching video entrance
+  confetti({ particleCount: 100, spread: 70, origin: { x: 0.5, y: 0.4 } });
   
   setTimeout(() => {
-    cover.style.display = 'none';
-    paper.classList.add('reveal-active');
-    setTimeout(() => { startTypewriterReveal(); }, 400);
-  }, 400);
-}
-
-function triggerSequentialFireworks() {
-  const fwData = [{ x: 0.2, y: 0.3 }, { x: 0.8, y: 0.3 }, { x: 0.5, y: 0.6 }];
-  fwData.forEach((fw, index) => { setTimeout(() => { massiveCrackerBurst(fw.x, fw.y); }, index * 500); });
-}
-
-function massiveCrackerBurst(x, y) {
-  const colors = ['#FFD700', '#FF1493', '#00FFFF', '#FF8C00', '#ADFF2F'];
-  const burstColors = [colors[Math.floor(Math.random() * colors.length)]];
-  confetti({ particleCount: 120, spread: 75, origin: { x: x, y: y }, colors: burstColors, startVelocity: 50 });
+    document.getElementById('flapCover').style.display = 'none';
+    startTypewriterReveal();
+  }, 1000);
 }
 
 function startTypewriterReveal() {
-  const textContainer = document.getElementById('typewriter-text');
-  if(!textContainer) return;
-  textContainer.innerHTML = '';
-  const allLines = rawMessage.split('\n');
+  const box = document.getElementById('liveTypewriterBox');
+  if(!box) return;
+  box.innerHTML = '';
   
+  const allLines = rawMessage.split('\n');
   allLines.forEach(line => {
     const p = document.createElement('p');
     p.textContent = line.trim() === '' ? ' ' : line;
     p.style.opacity = '0';
-    p.style.transform = 'translateY(15px)';
-    p.style.transition = 'opacity 0.8s ease-out, transform 0.8s ease-out';
-    textContainer.appendChild(p);
+    p.style.transform = 'translateY(10px)';
+    p.style.transition = 'opacity 0.5s ease-out, transform 0.5s ease-out';
+    p.style.marginBottom = '12px';
+    box.appendChild(p);
   });
 
-  const lines = textContainer.querySelectorAll('p');
-  let currentLine = 0;
+  const paragraphElements = box.querySelectorAll('p');
+  let index = 0;
 
-  function revealNextLine() {
-    if (currentLine < lines.length) {
-      lines[currentLine].style.opacity = '1';
-      lines[currentLine].style.transform = 'translateY(0)';
-      currentLine++;
-      let nextDelay = 1200;
-      if (currentLine < lines.length) {
-         if (lines[currentLine].textContent.trim() === '') nextDelay = 500;
-         if (lines[currentLine].textContent.includes('Enaku therium')) nextDelay = 1800;
-      }
-      setTimeout(revealNextLine, nextDelay);
-    } else {
-      const sig = document.getElementById('signature-block');
-      if(sig) {
-        sig.style.display = 'block';
-        sig.style.animation = 'zoomIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards';
-      }
+  function runLine() {
+    if (index < paragraphElements.length) {
+      paragraphElements[index].style.opacity = '1';
+      paragraphElements[index].style.transform = 'translateY(0)';
+      
+      const scroller = document.getElementById('scrollViewport');
+      if(scroller) { scroller.scrollTop = scroller.scrollHeight; }
+      
+      index++;
+      setTimeout(runLine, paragraphElements[index - 1].textContent.trim() === '' ? 300 : 950);
     }
   }
-  revealNextLine();
+  runLine();
+}
+
+function goToGiftStage() {
+  hideAndShow('stage-message', 'stage-gift');
+  var end = Date.now() + (1.5 * 1000);
+  (function frame() {
+    confetti({ particleCount: 3, spread: 60, origin: { x: Math.random(), y: Math.random() - 0.2 } });
+    if (Date.now() < end) { requestAnimationFrame(frame); }
+  }());
+}
+
+function revealUltimateSurprise() {
+  document.getElementById('gift-box').innerText = "👑💍❤️";
+  document.getElementById('gift-caption').innerHTML = "I Promise to Make You the Happiest Wifey Soon! 🫂✨";
+  confetti({ particleCount: 140, spread: 80, scalar: 1.8 });
 }
 
 function changeSlide(dir) { 
