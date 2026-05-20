@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Happy Birthday Brindhavathi Priyadharshan! 💖</title>
+<title>Happy Birthday Brindha! 💖</title>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -30,49 +30,29 @@ body {
 .stage { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; }
 .hidden { display: none !important; }
 
-/* Tap Heart Particles */
-.tap-heart {
-  position: fixed;
-  color: #ff69b4;
-  font-size: 24px;
-  pointer-events: none;
-  z-index: 9999;
-  animation: explode 0.8s ease-out forwards;
-}
-
-@keyframes explode {
-  0 { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; }
-  100% { transform: translate(var(--mx), var(--my)) scale(0) rotate(360deg); opacity: 0; }
-}
-
-/* Drifting Floating Hearts */
+/* Background Floating Elements */
 .heart { position: fixed; color: #ffffff; font-size: 20px; animation: float 4s linear infinite; opacity: 0; pointer-events: none; z-index: 1; filter: drop-shadow(0 0 5px rgba(244,114,182,0.5)); }
 @keyframes float { 0% { transform: translateY(105vh) scale(0.6); opacity: 0; } 10% { opacity: 0.5; } 90% { opacity: 0.5; } 100% { transform: translateY(-10vh) scale(1.3); opacity: 0; } }
 
-/* Pop-able Balloons */
-.balloon-pop { 
-  position: fixed; font-size: 3rem; cursor: pointer; animation: floatBalloon 7s linear forwards; 
-  user-select: none; z-index: 15; 
-}
-@keyframes floatBalloon { 
-  0% { transform: translateY(110vh) rotate(0deg); opacity: 1; } 
-  80% { opacity: 1; } 
-  100% { transform: translateY(-20vh) rotate(30deg); opacity: 0; } 
-}
+.balloon-pop { position: fixed; font-size: 3rem; cursor: pointer; animation: floatBalloon 7s linear forwards; user-select: none; z-index: 15; }
+@keyframes floatBalloon { 0% { transform: translateY(110vh) rotate(0deg); opacity: 1; } 80% { opacity: 1; } 100% { transform: translateY(-20vh) rotate(30deg); opacity: 0; } }
 
 @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
 @keyframes zoomIn { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+@keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
 
-/* UI Text styling */
+/* UI Text Elements */
 .countdown-text { font-size: 7rem; font-weight: 300; color: white; text-shadow: 0 0 20px rgba(219,39,119,0.6); }
 .kitty-img { width: 95px; height: 95px; margin-bottom: 20px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1)); }
 .pink-title { color: white; font-size: 1.6rem; font-weight: 700; line-height: 1.4; margin-bottom: 25px; padding: 0 5px; text-shadow: 0 2px 4px rgba(0,0,0,0.15); }
 .btn { background: white; color: #db2777; border: none; padding: 15px 40px; border-radius: 30px; font-size: 1rem; font-weight: 700; cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.15); transition: 0.3s; text-transform: uppercase; letter-spacing: 0.5px; z-index: 20; }
 .btn:active { transform: scale(0.95); background-color: #fff1f2; }
-.cake-avatar { font-size: 7.5rem; margin: 20px 0; cursor: pointer; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.15)); z-index: 20; transition: 0.2s;}
+
+/* Cake Setup */
+.cake-avatar { font-size: 7.5rem; margin: 15px 0; cursor: pointer; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.15)); z-index: 20; transition: 0.2s; }
 .cake-avatar:active { transform: scale(0.9); }
 
-/* Premium Gallery Styling */
+/* Premium Gallery Frame */
 .polaroid-frame { background: white; padding: 12px; padding-bottom: 55px; border-radius: 12px; box-shadow: 0 20px 40px rgba(0,0,0,0.25); width: 100%; max-width: 290px; position: relative; margin-bottom: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; height: auto; animation: zoomIn 0.5s ease-out; z-index: 10; }
 .polaroid-frame img { width: 100%; height: auto; object-fit: contain; border-radius: 6px; display: block; max-height: 380px; }
 .polaroid-caption { position: absolute; bottom: 14px; left: 0; right: 0; font-size: 1.1rem; color: #db2777; font-weight: 700; font-style: italic; }
@@ -81,29 +61,80 @@ body {
 .nav-btn:active { transform: scale(0.85); }
 .counter-tag { background: rgba(255,255,255,0.25); backdrop-filter: blur(5px); padding: 6px 18px; border-radius: 20px; font-size: 0.85rem; color: white; font-weight: 700; border: 1px solid rgba(255,255,255,0.3); }
 
-/* Elegant Letter Box */
-.letter-paper { background: rgba(255, 255, 255, 0.96); border-radius: 24px; padding: 25px 20px; text-align: left; box-shadow: 0 25px 50px rgba(0,0,0,0.3); max-height: 75vh; overflow-y: auto; width: 100%; z-index: 20; position: relative; display: none; }
+/* --- GREETING CARD SYSTEM --- */
+.card-wrapper { width: 100%; max-width: 310px; min-height: 400px; position: relative; perspective: 1000px; z-index: 30; }
+
+/* Cover Card Design */
+.card-cover {
+  background: linear-gradient(135deg, #fff0f6, #ffdeeb);
+  border: 4px dashed #f472b6;
+  border-radius: 24px;
+  padding: 30px 20px;
+  width: 100%;
+  height: 380px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+  cursor: pointer;
+  animation: zoomIn 0.6s ease-out, pulse 3s infinite ease-in-out;
+  transition: transform 0.5s, opacity 0.5s;
+}
+.card-cover h2 { color: #db2777; font-size: 2rem; font-weight: 800; margin-bottom: 15px; text-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+.card-cover .heart-badge { font-size: 4.5rem; margin-bottom: 20px; filter: drop-shadow(0 5px 10px rgba(219,39,119,0.2)); }
+.card-cover .tap-instruction { background: #db2777; color: white; padding: 8px 20px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; letter-spacing: 0.5px; text-transform: uppercase; box-shadow: 0 4px 10px rgba(219,39,119,0.3); }
+
+/* Inner Message Sheet Layout */
+.letter-paper { 
+  background: rgba(255, 255, 255, 0.98); 
+  border-radius: 24px; 
+  padding: 25px 20px; 
+  text-align: left; 
+  box-shadow: 0 25px 50px rgba(0,0,0,0.25); 
+  max-height: 75vh; 
+  overflow-y: auto; 
+  width: 100%; 
+  display: none;
+  animation: zoomIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
 .letter-header { font-size: 1.4rem; color: #db2777; font-weight: 700; text-align: center; padding-bottom: 12px; border-bottom: 2px solid #fbcfe8; margin-bottom: 18px; }
 .letter-text { font-size: 0.95rem; color: #374151; line-height: 1.65; white-space: pre-wrap; font-family: 'Courier New', Courier, monospace; }
 .signature { text-align: center; margin-top: 25px; font-size: 1rem; color: #db2777; font-weight: 700; border-top: 2px solid #fbcfe8; padding-top: 15px; display: none; }
 </style>
 </head>
-<body onclick="handleGlobalClick(event)">
+<body>
 
 <audio id="birthday-track" loop preload="auto"><source src="birthday-song.mp3" type="audio/mpeg"></audio>
 
 <div class="app-container">
   <div id="stage-countdown" class="stage"><div id="countdown-text" class="countdown-text">3</div></div>
-  <div id="stage-loading" class="stage hidden"><img src="https://api.iconify.design/twemoji:cat-face.svg" alt="Kitty" class="kitty-img"><p style="color: white; font-weight: 700;">Loading your birthday surprise my popee...</p></div>
-  <div id="stage-intro" class="stage hidden"><h1 class="pink-title">“Hey pondatiii its ur 24th birthday and 5th with me my love”</h1><button onclick="startJourneyAndMusic()" class="btn">Start the day mine</button></div>
-  <div id="stage-cake" class="stage hidden"><h2 id="cake-instruction" class="pink-title">Swipe anywhere to cut the cake!</h2><div onclick="cutTheCake()" id="cake-emoji" class="cake-avatar">🎂</div><button id="cake-next-btn" onclick="goToGalleryStage()" class="btn hidden">Memories →</button></div>
-  <div id="stage-gallery" class="stage hidden"><h2 class="pink-title" style="margin-bottom: 15px;">Some Sweet Moments</h2><div class="polaroid-frame"><img id="main-slider-img" src="photo1.jpeg" alt="Memories"><div id="main-slider-caption" class="polaroid-caption">Mine 💖</div></div><div class="slider-controls"><button onclick="changeSlide(-1)" class="nav-btn">◀</button><span id="slide-index-counter" class="counter-tag">1 / 11</span><button onclick="changeSlide(1)" class="nav-btn">▶</button></div><button onclick="triggerGrandFinaleAndLetter()" class="btn">Open My Message</button></div>
+  
+  <div id="stage-loading" class="stage hidden"><img src="https://api.iconify.design/twemoji:cat-face.svg" alt="Kitty" class="kitty-img"><p style="color: white; font-weight: 700;">Loading your birthday surprise...</p></div>
+  
+  <div id="stage-intro" class="stage hidden"><h1 class="pink-title">“Hey pondatiii its ur 24th birthday and 5th with me my love”</h1><button onclick="startJourneyAndMusic()" class="btn">Start the journey</button></div>
+  
+  <div id="stage-cake" class="stage hidden">
+    <h2 id="cake-instruction" class="pink-title">✨ Light the candle to make a wish! ✨</h2>
+    <div onclick="lightTheCandle()" id="cake-emoji" class="cake-avatar">🎂🕯️</div>
+    <button id="cake-next-btn" onclick="goToGalleryStage()" class="btn hidden">Memories →</button>
+  </div>
+  
+  <div id="stage-gallery" class="stage hidden"><h2 class="pink-title" style="margin-bottom: 15px;">Some Sweet Moments</h2><div class="polaroid-frame"><img id="main-slider-img" src="photo1.jpeg" alt="Memories"><div id="main-slider-caption" class="polaroid-caption">Mine 💖</div></div><div class="slider-controls"><button onclick="changeSlide(-1)" class="nav-btn">◀</button><span id="slide-index-counter" class="counter-tag">1 / 11</span><button onclick="changeSlide(1)" class="nav-btn">▶</button></div><button onclick="triggerGrandFinaleAndCard()" class="btn">Open My Message</button></div>
   
   <div id="stage-message" class="stage hidden">
-    <div id="letter-paper" class="letter-paper">
-      <h3 class="letter-header">A Special Message</h3>
-      <div id="typewriter-text" class="letter-text"></div>
-      <div id="signature-block" class="signature">With Infinite Love<br>Priyadharshan Brindhaviathi❤️</div>
+    <div class="card-wrapper">
+      <div id="greeting-card-cover" class="card-cover" onclick="openGreetingCard()">
+        <h2>Happy Birthday Papa ❤️</h2>
+        <div class="heart-badge">💌</div>
+        <div class="tap-instruction">Tap to open card</div>
+      </div>
+      
+      <div id="letter-paper" class="letter-paper">
+        <h3 class="letter-header">A Special Message</h3>
+        <div id="typewriter-text" class="letter-text"></div>
+        <div id="signature-block" class="signature">With Infinite Love<br>Priyadharshan Brindhaviathi❤️</div>
+      </div>
     </div>
   </div>
 </div>
@@ -115,46 +146,20 @@ const photoCaptions = ["Mine 💖", "That Beautiful Smile ✨", "Cutest Poppée 
 
 const rawMessage = `Happiest 24th birthday papa,
 
-Im always happy to see u growing and im always with u and will be with u in all ur ups and down as I promised.
+im always happy to see u growing and im always with u and will be with u in all ur ups and down as I promised.
 
 Enaku therium nambakula neraiya sanda and misunderstanding irku varuthunu but its all about a part of love so athalam iniku thooki oram vechitu enjoy ur day its ur day and alway be cheerful and joyful whatever happens.
 
-Aprm mukiyama unoda siripa niruthidatha ena analum bczz its what makes u the cuties popée of mine of all times so happiest birthday Ammu.
+aprm mukiyama unoda siripa niruthidatha ena analum bczz its what makes u the cuties popée of mine of all times so happiest birthday Ammu.
 
-And na epaium solura mari unaku pana satyatha kandipa nera vethuven whatever happen we can talk and sort it and stay together forever na una kittu kandipa pogamaten as i promised so atha pathi epaium yosichi kavala padatha.
+and na epaium solura mari unaku pana satyatha kandipa nera vethuven whatever happen we can talk and sort it and stay together forever na una kittu kandipa pogamaten as i promised so atha pathi epaium yosichi kavala padatha.
 
 "odamba nala pathuku the very soon we r going to get married so be healthy papa"
 
 I love u dii my goddess once again happy birthday papu may his year brings u all the joy and happiness to u and all ur wishes will definitely come true I manifest it for u.
 
-And as I always say all ur bad comes to me and all ur goods and my goods comes to u papu once happiest birthday and I love u more then 3000 times mine💐 🤍 🫂 🧿 🥂
+and as I always say all ur bad comes to me and all ur goods and my goods comes to u papu once happiest birthday and I love u more then 3000 times mine💐 🤍 🫂 🧿 🥂
 `;
-
-function handleGlobalClick(e) {
-  if (e.target.tagName === 'BUTTON' || e.target.classList.contains('cake-avatar')) return;
-  spawnExplosion(e.clientX, e.clientY);
-}
-
-function spawnExplosion(x, y) {
-  for (let i = 0; i < 6; i++) {
-    const heart = document.createElement('div');
-    heart.innerHTML = Math.random() > 0.5 ? '💖' : '❤';
-    heart.style.position = 'fixed';
-    heart.style.color = '#ff69b4';
-    heart.style.fontSize = '24px';
-    heart.style.pointerEvents = 'none';
-    heart.style.zIndex = '9999';
-    heart.style.animation = 'explode 0.8s ease-out forwards';
-    heart.style.left = x + 'px';
-    heart.style.top = y + 'px';
-    const mx = (Math.random() - 0.5) * 200 + 'px';
-    const my = (Math.random() - 0.5) * 200 + 'px';
-    heart.style.setProperty('--mx', mx);
-    heart.style.setProperty('--my', my);
-    document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 800);
-  }
-}
 
 function createHeart() { const heart = document.createElement("div"); heart.innerHTML = Math.random() > 0.5 ? "❤" : "💖"; heart.className = "heart"; heart.style.left = Math.random() * 100 + "vw"; heart.style.bottom = "-5vh"; heart.style.animationDuration = (Math.random() * 2 + 3) + "s"; document.body.appendChild(heart); setTimeout(() => heart.remove(), 4000); }
 
@@ -179,24 +184,19 @@ function popBalloon(balloonEl, x, y) {
   setTimeout(() => document.body.style.animation = "", 150);
 }
 
-// Fixed Countdown Loader - Completely isolated from audio bugs
 window.addEventListener('DOMContentLoaded', () => { 
   let num = 3; 
   const textNode = document.getElementById('countdown-text'); 
   if (!textNode) return;
-  
   const loop = setInterval(() => { 
     num--; 
-    if (num > 0) { 
-      textNode.innerText = num; 
-    } else { 
+    if (num > 0) { textNode.innerText = num; } 
+    else { 
       textNode.innerText = "❤"; 
       clearInterval(loop); 
       setTimeout(() => { 
         hideAndShow('stage-countdown', 'stage-loading'); 
-        setTimeout(() => { 
-          hideAndShow('stage-loading', 'stage-intro'); 
-        }, 2200); 
+        setTimeout(() => { hideAndShow('stage-loading', 'stage-intro'); }, 2200); 
       }, 700); 
     } 
   }, 1000); 
@@ -210,20 +210,18 @@ function hideAndShow(oldId, newId) {
 }
 
 function startJourneyAndMusic() { 
-  // Safe try/catch wrap so a missing track never stops the application execution
   try {
     const music = document.getElementById('birthday-track'); 
-    if (music) { music.play().catch(e => console.log("Audio play blocked or file not found, skipping safely.")); } 
-  } catch (err) {
-    console.log("Audio asset error handled safely.");
-  }
+    if (music) { music.play().catch(e => console.log("Audio play caught safely.")); } 
+  } catch (err) {}
   hideAndShow('stage-intro', 'stage-cake'); 
   setInterval(createHeart, 350);
 }
 
-function cutTheCake() { 
-  document.getElementById('cake-instruction').innerText = "Happy Birthday My Girl ! ❤️"; 
-  document.getElementById('cake-emoji').innerText = "🍰✨"; 
+// Fixed Cake Action Step
+function lightTheCandle() { 
+  document.getElementById('cake-instruction').innerText = "Happy Birthday, My Girl ! ❤️"; 
+  document.getElementById('cake-emoji').innerText = "🎂✨"; 
   document.getElementById('cake-next-btn').classList.remove('hidden'); 
   document.body.style.animation = "shake 0.5s"; 
   triggerConfettiSideStreams();
@@ -243,20 +241,27 @@ function goToGalleryStage() {
   balloonInterval = setInterval(spawnInteractiveBalloon, 1500);
 }
 
-function triggerGrandFinaleAndLetter() {
+function triggerGrandFinaleAndCard() {
   hideAndShow('stage-gallery', 'stage-message');
   clearInterval(balloonInterval);
   document.querySelectorAll('.balloon-pop').forEach(b => b.remove());
   triggerSequentialFireworks();
+}
 
+// Card Opening Function Execution
+function openGreetingCard() {
+  const cover = document.getElementById('greeting-card-cover');
+  const paper = document.getElementById('letter-paper');
+  
+  // Animate cover out of focus
+  cover.style.transform = 'rotateY(-110deg) scale(0.9)';
+  cover.style.opacity = '0';
+  
   setTimeout(() => {
-    const letter = document.getElementById('letter-paper');
-    if(letter) {
-      letter.style.display = 'block';
-      letter.style.animation = 'zoomIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-    }
-    setTimeout(() => { startTypewriterReveal(); }, 800);
-  }, 2500);
+    cover.style.display = 'none';
+    paper.style.display = 'block';
+    startTypewriterReveal();
+  }, 400);
 }
 
 function triggerSequentialFireworks() {
@@ -268,7 +273,6 @@ function massiveCrackerBurst(x, y) {
   const colors = ['#FFD700', '#FF1493', '#00FFFF', '#FF8C00', '#ADFF2F'];
   const burstColors = [colors[Math.floor(Math.random() * colors.length)]];
   confetti({ particleCount: 150, spread: 80, origin: { x: x, y: y }, colors: burstColors, startVelocity: 60, ticks: 300 });
-  confetti({ particleCount: 100, spread: 120, origin: { x: x, y: y }, colors: burstColors, startVelocity: 45, ticks: 250 });
 }
 
 function startTypewriterReveal() {
