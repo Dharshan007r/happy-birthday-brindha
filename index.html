@@ -55,4 +55,351 @@ body {
 .polaroid-caption { position: absolute; bottom: 14px; left: 0; right: 0; font-size: 1.1rem; color: #db2777; font-weight: 700; font-style: italic; }
 .slider-controls { display: flex; align-items: center; gap: 30px; margin-bottom: 25px; }
 .nav-btn { background: white; border: none; width: 48px; height: 48px; border-radius: 50%; color: #db2777; font-size: 1.2rem; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.15); display: flex; align-items: center; justify-content: center; }
-.counter-tag { background: rgba(255,255,255,0.25); backdrop-filter: blur(5px); padding: 6px 18px; border-radius: 20px; font-size: 0.85rem; color: white; font-weight: 700; border: 1px solid rgba(255,255,2
+.counter-tag { background: rgba(255,255,255,0.25); backdrop-filter: blur(5px); padding: 6px 18px; border-radius: 20px; font-size: 0.85rem; color: white; font-weight: 700; border: 1px solid rgba(255,255,255,0.3); }
+
+/* ========================================================
+   VIDEO-STYLE GREETING CARD (NEON BORDER, UPWARD FLAP)
+   ======================================================== */
+.video-card-glow-frame {
+  width: 100%;
+  max-width: 315px;
+  height: 430px;
+  background: transparent;
+  border: 4px solid #f472b6; /* Neon glowing pink outline from video */
+  border-radius: 20px;
+  box-shadow: 0 0 15px #f472b6, 0 20px 40px rgba(0,0,0,0.4);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.video-card-body {
+  width: 100%;
+  height: 100%;
+  background: #2e1065; /* Deep luxury purple foundation from video */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  overflow: hidden;
+  border-radius: 16px;
+}
+
+/* Card Cover: Flipping Upward Exactly Like Video */
+.video-card-flap-cover {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: #3b0764; /* Vibrant royal purple face from video */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 30px 20px 20px 20px;
+  z-index: 10;
+  cursor: pointer;
+  transform-origin: top center; /* Makes it open upwards like video */
+  transition: transform 1.1s cubic-bezier(0.66, 0, 0.12, 1), opacity 0.8s;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.cover-header-text { font-size: 1.3rem; font-weight: bold; color: #fbcfe8; letter-spacing: 1.5px; text-transform: uppercase; }
+.cover-center-art { display: flex; flex-direction: column; align-items: center; transform: translateY(-5px); }
+.cover-balloons-art { font-size: 5.2rem; filter: drop-shadow(0 10px 12px rgba(0,0,0,0.3)); }
+
+/* The distinct pink ribbon strip from video */
+.cover-ribbon-line-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: -15px;
+}
+.horizontal-ribbon-bar {
+  width: 115%;
+  height: 14px;
+  background: #f472b6;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+}
+.center-bow-emoji {
+  font-size: 3.2rem;
+  margin-top: -24px;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
+}
+
+.cover-footer-group { display: flex; flex-direction: column; align-items: center; width: 100%; }
+.cover-main-name { font-size: 2.1rem; font-weight: 900; color: white; text-shadow: 0 4px 10px rgba(0,0,0,0.6); margin-bottom: 12px; }
+.cover-tap-prompt { background: #db2777; color: white; font-size: 0.8rem; font-weight: 700; letter-spacing: 1px; padding: 6px 18px; border-radius: 20px; text-transform: uppercase; box-shadow: 0 4px 10px rgba(219,39,119,0.4); }
+
+/* Internal Scroll View: Matching the Video scroll track */
+.inner-scroll-viewport {
+  flex: 1;
+  background: #ffffff; /* Brilliant white card sheet inside */
+  border-radius: 12px;
+  padding: 18px 14px;
+  overflow-y: scroll; /* Force scrolling interactions */
+  text-align: center; /* Majority of text stays centered */
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid #fbcfe8;
+}
+
+/* Video-Style Pink Scrollbar Track elements */
+.inner-scroll-viewport::-webkit-scrollbar { width: 7px; }
+.inner-scroll-viewport::-webkit-scrollbar-track { background: #f3f4f6; border-radius: 10px; }
+.inner-scroll-viewport::-webkit-scrollbar-thumb { background: #db2777; border-radius: 10px; }
+
+.card-message-heading { font-size: 1.25rem; color: #db2777; font-weight: 800; border-bottom: 2px dashed #fbcfe8; padding-bottom: 10px; margin-bottom: 14px; text-align: center; }
+.card-message-body-text { font-size: 0.95rem; color: #374151; line-height: 1.65; white-space: pre-wrap; font-family: -apple-system, sans-serif; font-weight: 500; }
+
+/* FIX: Forces just the signature block to align bottom-right as requested */
+.signature-block-container {
+  display: block;
+  text-align: right;
+  margin-top: 25px;
+}
+.pink-signature {
+  font-size: 1rem;
+  color: #db2777;
+  font-weight: bold;
+  display: inline-block;
+  text-align: right;
+}
+
+/* Video Style Pink Action Button Row below track */
+.bottom-fixed-action-row {
+  width: 100%;
+  margin-top: 14px;
+}
+.pink-download-action-btn {
+  width: 100%;
+  background: #db2777; /* Crimson-pink video layout */
+  color: white;
+  border: none;
+  padding: 15px;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 5px 12px rgba(219,39,119,0.35);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Opening Triggers */
+.video-card-glow-frame.card-unfolded .video-card-flap-cover {
+  transform: rotateX(115deg) translateY(-20px);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* GIFT BOX STAGE */
+.gift-bounce-box { font-size: 7.5rem; margin: 25px 0; cursor: pointer; filter: drop-shadow(0 15px 20px rgba(0,0,0,0.3)); animation: bounce 2s infinite ease-in-out; }
+</style>
+</head>
+<body>
+
+<audio id="birthday-track" loop preload="auto"><source src="birthday-song.mp3" type="audio/mpeg"></audio>
+
+<div class="app-container">
+  <div id="stage-countdown" class="stage"><div id="countdown-text" class="countdown-text">3</div></div>
+  
+  <div id="stage-loading" class="stage hidden"><img src="https://api.iconify.design/twemoji:cat-face.svg" alt="Kitty" class="kitty-img"><p style="color: white; font-weight: 700;">Loading your birthday surprise...</p></div>
+  
+  <div id="stage-intro" class="stage hidden"><h1 class="pink-title">“Hey pondatiii its ur 24th birthday and 5th with me my love”</h1><button onclick="startJourneyAndMusic()" class="btn">Start the journey</button></div>
+  
+  <div id="stage-cake" class="stage hidden">
+    <h2 id="cake-instruction" class="pink-title">✨ Light the candle to make a wish! ✨</h2>
+    <div onclick="lightTheCandle()" id="cake-emoji" class="cake-avatar">🎂🕯️</div>
+    <button id="cake-next-btn" onclick="goToGalleryStage()" class="btn hidden">Memories →</button>
+  </div>
+  
+  <div id="stage-gallery" class="stage hidden"><h2 class="pink-title" style="margin-bottom: 15px;">Some Sweet Moments</h2><div class="polaroid-frame"><img id="main-slider-img" src="photo1.jpeg" alt="Memories"><div id="main-slider-caption" class="polaroid-caption">Mine 💖</div></div><div class="slider-controls"><button onclick="changeSlide(-1)" class="nav-btn">◀</button><span id="slide-index-counter" class="counter-tag">1 / 11</span><button onclick="changeSlide(1)" class="nav-btn">▶</button></div><button onclick="goToCardStage()" class="btn">Open My Message</button></div>
+  
+  <div id="stage-message" class="stage hidden">
+    <h2 class="pink-title" style="margin-bottom: 15px; font-style: italic;">A Special Message</h2>
+    <div class="video-card-glow-frame" id="glowFrame">
+      
+      <div class="video-card-body">
+        
+        <div class="video-card-flap-cover" id="flapCover" onclick="triggerUpwardUnfold()">
+          <div class="cover-header-text">Happy Birthday</div>
+          <div class="cover-center-art">
+            <div class="cover-balloons-art">🎈🎈🎈</div>
+            <div class="cover-ribbon-line-wrapper">
+              <div class="horizontal-ribbon-bar"></div>
+              <div class="center-bow-emoji">🎀</div>
+            </div>
+          </div>
+          <div class="cover-footer-group">
+            <div class="cover-main-name">Papa ❤️</div>
+            <div class="cover-tap-prompt">Click to Open</div>
+          </div>
+        </div>
+        
+        <div class="inner-scroll-viewport" id="scrollViewport">
+          <h3 class="card-message-heading">For My Precious Ammu</h3>
+          <div id="preloadedMessage" class="card-message-body-text">
+            <p style="margin-bottom: 15px;">Happiest 24th birthday papa,</p>
+            <p style="margin-bottom: 15px;">Im always happy to see u growing and im always with u and will be with u in all ur ups and down as I promised.</p>
+            <p style="margin-bottom: 15px;">Enaku therium nambakula neraiya sanda and misunderstanding irku varuthunu but its all about a part of love so athalam iniku thooki oram vechitu enjoy ur day its ur day and alway be cheerful and joyful whatever happens.</p>
+            <p style="margin-bottom: 15px;">Aprm mukiyama unoda siripa niruthidatha ena analum bczz its what makes u the cuties popée of mine of all times so happiest birthday Ammu.</p>
+            <p style="margin-bottom: 15px;">And na epaium solura mari unaku pana satyatha kandipa nera vethuven whatever happen we can talk and sort it and stay together forever na una kittu kandipa pogamaten as i promised so atha pathi epaium yosichi kavala padatha.</p>
+            <p style="color: #db2777; font-weight: bold; font-size: 1rem; margin: 18px 0; text-align: center;">"Odamba nala pathuku the very soon we r going to get married so be healthy papa"</p>
+            <p style="margin-bottom: 15px;">I love u dii my goddess once again happy birthday papu may his year brings u all the joy and happiness to u and all ur wishes will definitely come true I manifest it for u.</p>
+            <p style="margin-bottom: 15px;">And as I always say all ur bad comes to me and all ur goods and my goods comes to u papu once happiest birthday and I love u more then 3000 times mine💐 🤍 🫂 🧿 🥂</p>
+            
+            <div class="signature-block-container">
+              <span class="pink-signature">- With Infinite Love,<br>Priyadharshan Brindhaviathi❤️</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="bottom-fixed-action-row">
+          <button class="pink-download-action-btn" onclick="goToGiftStage()">Promise For U ➔</button>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <div id="stage-gift" class="stage hidden">
+    <h1 class="pink-title" style="font-size: 2.2rem; font-style: italic;">One Last Thing...</h1>
+    <div id="gift-box" class="gift-bounce-box" onclick="revealUltimateSurprise()">🎁</div>
+    <h2 id="gift-caption" style="color: white; font-weight: 700; font-size: 1.3rem;">Tap the gift</h2>
+  </div>
+</div>
+
+<script>
+let activeIndex = 0;
+const photoFiles = ["photo1.jpeg", "photo2.jpeg", "photo3.jpeg", "photo4.jpeg", "photo5.jpeg", "photo6.jpeg", "photo7.jpeg", "photo8.jpeg", "photo9.jpeg", "photo10.jpeg", "photo11.jpeg"];
+const photoCaptions = ["Mine 💖", "That Beautiful Smile ✨", "Cutest Poppée 🥺", "My Ammu 🤍", "Together Forever 🫂", "Every Single Day with You 🧿", "My Goddess 🥂", "Pure Happiness 💕", "Love You 3000 ♾️", "My Safest Escape 🥰", "Forever Yours ❤️"];
+
+function createHeart() { const heart = document.createElement("div"); heart.innerHTML = Math.random() > 0.5 ? "❤" : "💖"; heart.className = "heart"; heart.style.left = Math.random() * 100 + "vw"; heart.style.bottom = "-5vh"; heart.style.animationDuration = (Math.random() * 2 + 3) + "s"; document.body.appendChild(heart); setTimeout(() => heart.remove(), 4000); }
+
+let balloonInterval;
+function spawnInteractiveBalloon() {
+  const balloon = document.createElement("div");
+  balloon.innerHTML = ['🎈', '🍬', '✨', '🎁'][Math.floor(Math.random() * 4)];
+  balloon.className = "balloon-pop";
+  balloon.style.left = (Math.random() * 80 + 10) + "vw";
+  balloon.style.fontSize = (Math.random() * 2 + 2) + "rem"; 
+  balloon.style.animationDuration = (Math.random() * 3 + 6) + "s";
+  balloon.onclick = function(e) { e.stopPropagation(); popBalloon(balloon, e.clientX, e.clientY); };
+  document.body.appendChild(balloon);
+  setTimeout(() => { if(balloon.parentNode) balloon.remove(); }, 8000);
+}
+
+function popBalloon(balloonEl, x, y) {
+  balloonEl.remove();
+  confetti({ particleCount: 40, spread: 60, origin: { x: x / window.innerWidth, y: y / window.innerHeight } });
+  document.body.style.animation = "shake 0.15s";
+  setTimeout(() => document.body.style.animation = "", 150);
+}
+
+window.addEventListener('DOMContentLoaded', () => { 
+  let num = 3; 
+  const textNode = document.getElementById('countdown-text'); 
+  const loop = setInterval(() => { 
+    num--; 
+    if (num > 0) { textNode.innerText = num; } 
+    else { 
+      textNode.innerText = "❤"; 
+      clearInterval(loop); 
+      setTimeout(() => { 
+        hideAndShow('stage-countdown', 'stage-loading'); 
+        setTimeout(() => { hideAndShow('stage-loading', 'stage-intro'); }, 2200); 
+      }, 700); 
+    } 
+  }, 1000); 
+});
+
+function hideAndShow(oldId, newId) { 
+  const oldStage = document.getElementById(oldId);
+  const newStage = document.getElementById(newId);
+  if(oldStage) oldStage.classList.add('hidden'); 
+  if(newStage) newStage.classList.remove('hidden'); 
+}
+
+function startJourneyAndMusic() { 
+  try { document.getElementById('birthday-track').play().catch(e => {}); } catch (err) {}
+  hideAndShow('stage-intro', 'stage-cake'); 
+  setInterval(createHeart, 350);
+}
+
+function lightTheCandle() { 
+  document.getElementById('cake-instruction').innerText = "Happy Birthday My Girl ! ❤️"; 
+  document.getElementById('cake-emoji').innerText = "🎂✨"; 
+  document.getElementById('cake-next-btn').classList.remove('hidden'); 
+  document.body.style.animation = "shake 0.5s"; 
+  triggerConfettiSideStreams();
+}
+
+function triggerConfettiSideStreams() {
+  var duration = 2.5 * 1000; var end = Date.now() + duration;
+  (function frame() {
+    confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 } });
+    confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 } });
+    if (Date.now() < end) { requestAnimationFrame(frame); }
+  }());
+}
+
+function goToGalleryStage() { 
+  hideAndShow('stage-cake', 'stage-gallery'); 
+  balloonInterval = setInterval(spawnInteractiveBalloon, 1500);
+}
+
+function goToCardStage() {
+  hideAndShow('stage-gallery', 'stage-message');
+  clearInterval(balloonInterval);
+  document.querySelectorAll('.balloon-pop').forEach(b => b.remove());
+}
+
+function triggerUpwardUnfold() {
+  const frame = document.getElementById('glowFrame');
+  if (frame.classList.contains('card-unfolded')) return;
+  
+  frame.classList.add('card-unfolded');
+  
+  // Confetti burst for unfolding matching reference entrance
+  confetti({ particleCount: 100, spread: 70, origin: { x: 0.5, y: 0.4 } });
+  
+  setTimeout(() => {
+    document.getElementById('flapCover').style.display = 'none';
+    // Instantly snap scroll back to top upon open
+    const viewport = document.getElementById('scrollViewport');
+    if(viewport) viewport.scrollTop = 0;
+  }, 1000);
+}
+
+function goToGiftStage() {
+  hideAndShow('stage-message', 'stage-gift');
+  var end = Date.now() + (1.5 * 1000);
+  (function frame() {
+    confetti({ particleCount: 3, spread: 60, origin: { x: Math.random(), y: Math.random() - 0.2 } });
+    if (Date.now() < end) { requestAnimationFrame(frame); }
+  }());
+}
+
+function revealUltimateSurprise() {
+  document.getElementById('gift-box').innerText = "👑💍❤️";
+  document.getElementById('gift-caption').innerHTML = "I Promise to Make You the Happiest Wifey Soon! 🫂✨";
+  confetti({ particleCount: 140, spread: 80, scaler: 1.8 });
+}
+
+function changeSlide(dir) { 
+  activeIndex = (activeIndex + dir + photoFiles.length) % photoFiles.length; 
+  const imgEl = document.getElementById('main-slider-img');
+  const capEl = document.getElementById('main-slider-caption');
+  const countEl = document.getElementById('slide-index-counter');
+  if(imgEl) imgEl.src = photoFiles[activeIndex]; 
+  if(capEl) capEl.innerText = photoCaptions[activeIndex]; 
+  if(countEl) countEl.innerText = `${activeIndex + 1} / 11`; 
+}
+</script>
+</body>
+</html>
