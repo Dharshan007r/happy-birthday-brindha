@@ -39,7 +39,6 @@ body {
 
 @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
 @keyframes zoomIn { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-@keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
 
 /* UI Text Elements */
 .countdown-text { font-size: 7rem; font-weight: 300; color: white; text-shadow: 0 0 20px rgba(219,39,119,0.6); }
@@ -61,46 +60,149 @@ body {
 .nav-btn:active { transform: scale(0.85); }
 .counter-tag { background: rgba(255,255,255,0.25); backdrop-filter: blur(5px); padding: 6px 18px; border-radius: 20px; font-size: 0.85rem; color: white; font-weight: 700; border: 1px solid rgba(255,255,255,0.3); }
 
-/* --- GREETING CARD SYSTEM --- */
-.card-wrapper { width: 100%; max-width: 310px; min-height: 400px; position: relative; perspective: 1000px; z-index: 30; }
-
-/* Cover Card Design */
-.card-cover {
-  background: linear-gradient(135deg, #fff0f6, #ffdeeb);
-  border: 4px dashed #f472b6;
-  border-radius: 24px;
-  padding: 30px 20px;
+/* --- VIDEO-STYLE GREETING CARD SYSTEM --- */
+.card-container {
   width: 100%;
-  height: 380px;
+  max-width: 320px;
+  height: 420px;
+  position: relative;
+  perspective: 1500px;
+  z-index: 30;
+}
+
+/* Main Card Body */
+.birthday-card {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  transform-style: preserve-3d;
+  transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  border-radius: 16px;
+}
+
+/* Card Faces */
+.card-front, .card-inside {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  border-radius: 16px;
+  backface-visibility: hidden;
+  overflow: hidden;
+}
+
+/* Front Cover Styling (Matches Video Layout) */
+.card-front {
+  background: linear-gradient(135deg, #701a75, #4a044e);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 30px 20px;
+  border: 3px solid #f472b6;
+  cursor: pointer;
+}
+
+.card-title-top {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #fbcfe8;
+  letter-spacing: 1px;
+}
+
+.card-graphic-center {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-  cursor: pointer;
-  animation: zoomIn 0.6s ease-out, pulse 3s infinite ease-in-out;
-  transition: transform 0.5s, opacity 0.5s;
+  position: relative;
 }
-.card-cover h2 { color: #db2777; font-size: 2rem; font-weight: 800; margin-bottom: 15px; text-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-.card-cover .heart-badge { font-size: 4.5rem; margin-bottom: 20px; filter: drop-shadow(0 5px 10px rgba(219,39,119,0.2)); }
-.card-cover .tap-instruction { background: #db2777; color: white; padding: 8px 20px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; letter-spacing: 0.5px; text-transform: uppercase; box-shadow: 0 4px 10px rgba(219,39,119,0.3); }
 
-/* Inner Message Sheet Layout */
-.letter-paper { 
-  background: rgba(255, 255, 255, 0.98); 
-  border-radius: 24px; 
-  padding: 25px 20px; 
-  text-align: left; 
-  box-shadow: 0 25px 50px rgba(0,0,0,0.25); 
-  max-height: 75vh; 
-  overflow-y: auto; 
-  width: 100%; 
-  display: none;
-  animation: zoomIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+.front-balloons {
+  font-size: 5rem;
+  filter: drop-shadow(0 8px 10px rgba(0,0,0,0.3));
+  margin-bottom: 5px;
 }
-.letter-header { font-size: 1.4rem; color: #db2777; font-weight: 700; text-align: center; padding-bottom: 12px; border-bottom: 2px solid #fbcfe8; margin-bottom: 18px; }
-.letter-text { font-size: 0.95rem; color: #374151; line-height: 1.65; white-space: pre-wrap; font-family: 'Courier New', Courier, monospace; }
-.signature { text-align: center; margin-top: 25px; font-size: 1rem; color: #db2777; font-weight: 700; border-top: 2px solid #fbcfe8; padding-top: 15px; display: none; }
+
+.front-ribbon {
+  font-size: 3rem;
+  margin-top: -15px;
+}
+
+.card-heading-bottom {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: white;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+
+.tap-indicator-badge {
+  background: #f472b6;
+  color: white;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-top: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  animation: pulse 2s infinite;
+}
+
+/* Inside Page Design */
+.card-inside {
+  background: #fff0f6;
+  color: #374151;
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  border: 3px solid #fbcfe8;
+}
+
+.card-inside-scroll {
+  flex: 1;
+  overflow-y: auto;
+  text-align: left;
+  padding-right: 4px;
+}
+
+.letter-header { 
+  font-size: 1.3rem; 
+  color: #db2777; 
+  font-weight: 700; 
+  text-align: center; 
+  padding-bottom: 10px; 
+  border-bottom: 2px dashed #fbcfe8; 
+  margin-bottom: 15px; 
+}
+
+.letter-text { 
+  font-size: 0.95rem; 
+  line-height: 1.6; 
+  white-space: pre-wrap; 
+  font-family: 'Courier New', Courier, monospace; 
+  color: #4b5563;
+}
+
+.signature { 
+  text-align: center; 
+  margin-top: 20px; 
+  font-size: 0.95rem; 
+  color: #db2777; 
+  font-weight: 700; 
+  border-top: 2px dashed #fbcfe8; 
+  padding-top: 12px; 
+  display: none; 
+}
+
+/* Active State to Open the Card */
+.card-container.open .birthday-card {
+  transform: rotateY(-180deg);
+}
+
+@keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.06); } }
 </style>
 </head>
 <body>
@@ -120,20 +222,33 @@ body {
     <button id="cake-next-btn" onclick="goToGalleryStage()" class="btn hidden">Memories →</button>
   </div>
   
-  <div id="stage-gallery" class="stage hidden"><h2 class="pink-title" style="margin-bottom: 15px;">Some Sweet Moments</h2><div class="polaroid-frame"><img id="main-slider-img" src="photo1.jpeg" alt="Memories"><div id="main-slider-caption" class="polaroid-caption">Mine 💖</div></div><div class="slider-controls"><button onclick="changeSlide(-1)" class="nav-btn">◀</button><span id="slide-index-counter" class="counter-tag">1 / 11</span><button onclick="changeSlide(1)" class="nav-btn">▶</button></div><button onclick="triggerGrandFinaleAndCard()" class="btn">Open My Message</button></div>
+  <div id="stage-gallery" class="stage hidden"><h2 class="pink-title" style="margin-bottom: 15px;">Some Sweet Moments</h2><div class="polaroid-frame"><img id="main-slider-img" src="photo1.jpeg" alt="Memories"><div id="main-slider-caption" class="polaroid-caption">Mine 💖</div></div><div class="slider-controls"><button onclick="changeSlide(-1)" class="nav-btn">◀</button><span id="slide-index-counter" class="counter-tag">1 / 11</span><button onclick="changeSlide(1)" class="nav-btn">▶</button></div><button onclick="goToCardStage()" class="btn">Open My Message</button></div>
   
   <div id="stage-message" class="stage hidden">
-    <div class="card-wrapper">
-      <div id="greeting-card-cover" class="card-cover" onclick="openGreetingCard()">
-        <h2>Happy Birthday Papa ❤️</h2>
-        <div class="heart-badge">💌</div>
-        <div class="tap-instruction">Tap to open card</div>
-      </div>
-      
-      <div id="letter-paper" class="letter-paper">
-        <h3 class="letter-header">A Special Message</h3>
-        <div id="typewriter-text" class="letter-text"></div>
-        <div id="signature-block" class="signature">With Infinite Love<br>Priyadharshan Brindhaviathi❤️</div>
+    <h2 class="pink-title" id="card-stage-title" style="margin-bottom: 15px;">A Special Message</h2>
+    <div class="card-container" id="cardContainer">
+      <div class="birthday-card" id="birthdayCard" onclick="openGreetingCard()">
+        
+        <div class="card-front">
+          <div class="card-title-top">Happy Birthday</div>
+          <div class="card-graphic-center">
+            <div class="front-balloons">🎈🎈🎈</div>
+            <div class="front-ribbon">🎀</div>
+          </div>
+          <div>
+            <div class="card-heading-bottom">Papa ❤️</div>
+            <div class="tap-indicator-badge">Click to Open</div>
+          </div>
+        </div>
+        
+        <div class="card-inside">
+          <div class="card-inside-scroll">
+            <h3 class="letter-header">For My Precious Ammu</h3>
+            <div id="typewriter-text" class="letter-text"></div>
+            <div id="signature-block" class="signature">With Infinite Love<br>Priyadharshan Brindhaviathi❤️</div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -184,6 +299,7 @@ function popBalloon(balloonEl, x, y) {
   setTimeout(() => document.body.style.animation = "", 150);
 }
 
+// Countdown handler safely isolated from audio blocking
 window.addEventListener('DOMContentLoaded', () => { 
   let num = 3; 
   const textNode = document.getElementById('countdown-text'); 
@@ -218,7 +334,6 @@ function startJourneyAndMusic() {
   setInterval(createHeart, 350);
 }
 
-// Fixed Cake Action Step
 function lightTheCandle() { 
   document.getElementById('cake-instruction').innerText = "Happy Birthday, My Girl ! ❤️"; 
   document.getElementById('cake-emoji').innerText = "🎂✨"; 
@@ -241,38 +356,35 @@ function goToGalleryStage() {
   balloonInterval = setInterval(spawnInteractiveBalloon, 1500);
 }
 
-function triggerGrandFinaleAndCard() {
+function goToCardStage() {
   hideAndShow('stage-gallery', 'stage-message');
   clearInterval(balloonInterval);
   document.querySelectorAll('.balloon-pop').forEach(b => b.remove());
-  triggerSequentialFireworks();
 }
 
-// Card Opening Function Execution
+// 3D Card Unfolding Activation Rule
 function openGreetingCard() {
-  const cover = document.getElementById('greeting-card-cover');
-  const paper = document.getElementById('letter-paper');
+  const container = document.getElementById('cardContainer');
+  if (container.classList.contains('open')) return; // Avoid double triggers
   
-  // Animate cover out of focus
-  cover.style.transform = 'rotateY(-110deg) scale(0.9)';
-  cover.style.opacity = '0';
+  container.classList.add('open');
+  triggerSequentialFireworks();
   
+  // Wait for opening flip animation to clear before starting text reveal
   setTimeout(() => {
-    cover.style.display = 'none';
-    paper.style.display = 'block';
     startTypewriterReveal();
-  }, 400);
+  }, 800);
 }
 
 function triggerSequentialFireworks() {
-  const fwData = [{ x: 0.1, y: 0.2 }, { x: 0.9, y: 0.2 }, { x: 0.1, y: 0.8 }, { x: 0.9, y: 0.8 }];
-  fwData.forEach((fw, index) => { setTimeout(() => { massiveCrackerBurst(fw.x, fw.y); }, index * 600); });
+  const fwData = [{ x: 0.1, y: 0.2 }, { x: 0.9, y: 0.2 }, { x: 0.5, y: 0.5 }];
+  fwData.forEach((fw, index) => { setTimeout(() => { massiveCrackerBurst(fw.x, fw.y); }, index * 500); });
 }
 
 function massiveCrackerBurst(x, y) {
   const colors = ['#FFD700', '#FF1493', '#00FFFF', '#FF8C00', '#ADFF2F'];
   const burstColors = [colors[Math.floor(Math.random() * colors.length)]];
-  confetti({ particleCount: 150, spread: 80, origin: { x: x, y: y }, colors: burstColors, startVelocity: 60, ticks: 300 });
+  confetti({ particleCount: 100, spread: 70, origin: { x: x, y: y }, colors: burstColors, startVelocity: 45 });
 }
 
 function startTypewriterReveal() {
@@ -285,8 +397,8 @@ function startTypewriterReveal() {
     const p = document.createElement('p');
     p.textContent = line.trim() === '' ? ' ' : line;
     p.style.opacity = '0';
-    p.style.transform = 'translateY(15px)';
-    p.style.transition = 'opacity 0.8s ease-out, transform 0.8s ease-out';
+    p.style.transform = 'translateY(10px)';
+    p.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
     textContainer.appendChild(p);
   });
 
@@ -298,17 +410,16 @@ function startTypewriterReveal() {
       lines[currentLine].style.opacity = '1';
       lines[currentLine].style.transform = 'translateY(0)';
       currentLine++;
-      let nextDelay = 1200;
+      let nextDelay = 1100;
       if (currentLine < lines.length) {
-         if (lines[currentLine].textContent.trim() === '') nextDelay = 500;
-         if (lines[currentLine].textContent.includes('Enaku therium')) nextDelay = 1800;
+         if (lines[currentLine].textContent.trim() === '') nextDelay = 400;
       }
       setTimeout(revealNextLine, nextDelay);
     } else {
       const sig = document.getElementById('signature-block');
       if(sig) {
         sig.style.display = 'block';
-        sig.style.animation = 'zoomIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards';
+        sig.style.animation = 'zoomIn 0.8s ease-out forwards';
       }
     }
   }
